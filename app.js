@@ -9,6 +9,8 @@ const productRouter = require("./components/product");
 const categoryRouter = require("./components/category");
 const producerRouter = require("./components/producer");
 const orderRouter = require("./components/order");
+const apiProductRouter = require('./components/product/api');
+
 
 const app = express();
 
@@ -28,6 +30,11 @@ app.use("/product", productRouter);
 app.use("/category", categoryRouter);
 app.use("/producer", producerRouter);
 app.use("/order", orderRouter);
+
+// API
+app.use('/api/product', apiProductRouter);
+
+
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
