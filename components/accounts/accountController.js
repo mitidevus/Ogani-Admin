@@ -16,6 +16,7 @@ exports.get_accounts = async(req, res) => {
 exports.ban_handle = async (req, res) => {
     const id = req.params.id
     console.log("id ban controller: ", id);
+   
     let result = await accountService.ban_user(id)
     res.json(result);
 }

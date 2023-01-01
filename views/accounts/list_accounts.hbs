@@ -6,7 +6,7 @@
                 <div class="d-flex">
                     <a class="btn btn-primary btn-block gradient-custom-4">
                         <i class="fas fa-plus-circle"></i>
-                        Update
+                        {{user.user_Id}}
                     </a>
                     <div class="filter__sort ms-3">
                         <div class="sort-list">
@@ -249,10 +249,10 @@
 
 
     var banHandle = (id)=>{
-        $.getJSON(`/api/accounts/ban/${id}`, function(err, data){
-            console.log("data:  ", data)
-            load_account(prePage, preKeySearch, preSort)
-        })
+        if(id!=={{user.user_Id}})
+            $.getJSON(`/api/accounts/ban/${id}`, function(err, data){
+                load_account(prePage, preKeySearch, preSort)
+            })
     }
 
 </script>
