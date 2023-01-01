@@ -16,6 +16,10 @@ exports.getAllCategory = async () => {
     return productRepository.getAllCategory();
 }
 
+exports.getAllBrand = async () => {
+    return productRepository.getAllBrand();
+}
+
 exports.getSortedProductByPrice_ASC = async (page,cate_Id,nameFilter, min, max) => {
     return productRepository.getSortedProductByPrice_ASC(page,cate_Id,nameFilter, min, max)
 }
@@ -38,4 +42,8 @@ exports.filter = async (page=1, cate_id=0, nameFilter, min, max) => {
 
 exports.getSortedProductByRelease_Date_Latest = () => {
     return productRepository.getSortedProductByRelease_Date_Latest();
+}
+
+exports.addProduct = async (product) => {
+    return productRepository.addProduct(product);
 }

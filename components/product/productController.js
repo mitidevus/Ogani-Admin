@@ -89,3 +89,27 @@ exports.list_product = async (req, res) => {
         originalUrl: `/product/page/1/${qs.stringify(filter)}`,
     });
 };
+
+exports.add_product_get = async (req, res) => {
+    let listCategory = await productService.getAllCategory();
+    let listBrand = await productService.getAllBrand();
+    res.render("product/add_product", { listCategory, listBrand });
+};
+
+exports.add_product_post = async (req, res) => {
+    const { name, description, quantity, price, image, category_Id, brand_Id } = req.body;
+    const product = {
+        name,
+        description,
+        quantity,
+        price,
+        image,
+        category_Id: parseInt(category_Id),
+        rate_Star: 5,
+        brand_Id: parseInt(brand_Id),
+        release_Date: new Date(),
+        hot_product: false,
+    };
+    console.log(product);
+    res.redirect("/product");
+};

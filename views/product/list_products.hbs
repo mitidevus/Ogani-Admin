@@ -3,10 +3,27 @@
         <div id="search-form" class="row mt-3 justify-content-start">
 
             <div class="col-12 col-md-6 col-xl-8 mb-3">
-                <a class="btn btn-primary btn-block gradient-custom-4" href="/product">
-                    <i class="fas fa-plus-circle"></i>
-                    Thêm sản phẩm
-                </a>
+                <div class="d-flex">
+                    <a class="btn btn-primary btn-block gradient-custom-4" href="/product/add">
+                        <i class="fas fa-plus-circle"></i>
+                        Add product
+                    </a>
+                    <div class="filter__sort ms-3">
+                        <div class="sort-list">
+                                    <span class="sort-item">Sort by</span>
+                                    <ul class="sort-by">
+                                        <li><a href="" id="price-asc" class="sort-item">Price:
+                                                <span class="fw-bold">Ascending</span></a></li>
+                                        <li><a href="" id="price-desc" class="sort-item">Price:
+                                                <span class="fw-bold">Descending</span></a></li>
+                                        <li><a href="" id="star-asc" class="sort-item">Rate star:
+                                                <span class="fw-bold">Ascending</span></a></li>
+                                        <li><a href="" id="star-desc" class="sort-item">Rate star:
+                                                <span class="fw-bold">Descending</span></a></li>
+                                    </ul>
+                                </div>
+                    </div>
+                </div>
             </div>
 
             <div class="col-12 col-md-6 col-xl-4 mb-3">
@@ -16,7 +33,7 @@
                             id="myInput"
                             type="search"
                             onkeyup="mySearchFunction()"
-                            placeholder="Nhập tên sản phẩm bạn cần tìm?"
+                            placeholder="Enter product name to search"
                             aria-describedby="btn-search"
                             class="form-control border-0 bg-light"
                         />
@@ -34,16 +51,17 @@
     <div class="container-fluid mt-4">
         <div class="table-responsive">
             <table id="myTable" class="table table-hover table-striped table-bordered">
-                <thead>
+                <thead class="text-center">
                     <tr>
-                        <th>Tên sản phẩm</th>
-                        <th>Chi tiết</th>
-                        <th>Số lượng</th>
-                        <th>Giá</th>
-                        <th>Ảnh</th>
-                        <th>Danh mục</th>
-                        <th>Thương hiệu</th>
-                        <th>Điều chỉnh</th>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Image</th>
+                        <th>Category</th>
+                        <th>Brand</th>
+                        <th>Star</th>
+                        <th>Adjust</th>
                     </tr>
                 </thead>
 
@@ -52,8 +70,8 @@
                         <tr>
                             <td>{{this.name}}</td>
                             <td>{{this.description}}</td>
-                            <td>{{this.remain_Amount}}</td>
-                            <td>{{this.price}}</td>
+                            <td class="text-center">{{this.remain_Amount}}</td>
+                            <td class="text-center">{{this.price}}</td>
                             <td>
                                 <img
                                     src="{{this.image}}"
@@ -64,8 +82,9 @@
                                     style="border-radius: 10px;"
                                 />
                             </td>
-                            <td>{{this.category_name}}</td>
-                            <td>{{this.brand}}</td>
+                            <td class="text-center">{{this.category_name}}</td>
+                            <td class="text-center">{{this.brand_name}}</td>
+                            <td class="text-center">{{this.rate_Star}}</td>
                             <td>
                                 <div class="center">
                                     <a href="/product">
@@ -142,8 +161,8 @@
                     <tr>
                         <td>${v.name}</td>
                         <td>${v.description}</td>
-                        <td>${v.remain_Amount}</td>
-                        <td>${v.price}</td>
+                        <td class="text-center">${v.remain_Amount}</td>
+                        <td class="text-center">${v.price}</td>
                         <td>
                             <img
                                 src="${v.image}"
@@ -154,14 +173,15 @@
                                 style="border-radius: 10px;"
                             />
                         </td>
-                        <td>${v.category_name}</td>
-                        <td>${v.brand}</td>
+                        <td class="text-center">${v.category_name}</td>
+                        <td class="text-center">${v.brand_name}</td>
+                        <td class="text-center">${v.rate_Star}</td>
+
                         <td>
                             <div class="center">
                                 <a href="/product">
                                     <i class="far fa-edit" title="Chỉnh sửa sản phẩm"></i>
                                 </a>
-
                                 <a href="/product" onclick="return confirm('Bạn có muốn xóa không?')">
                                     <i
                                         class="fas fa-trash"
@@ -176,7 +196,6 @@
             })
             htmlListProduct= data.join("")
             list_product.innerHTML= htmlListProduct
-
             if (cate_id){
                 if (preCateID!==cate_id){
                     renderPage(products.total_page, cate_id, name, sort)
@@ -198,7 +217,6 @@
                 }
                 
             }
-
             if (min){
                 if (max!=preMax){
                     renderPage(products.total_page, cate_id, name, sort, min, max)
@@ -211,9 +229,8 @@
             }
         });
     }
-
+    
     /*
-
     //handle form search
     let btn_submit_search= document.getElementById("btn_submit_search")
     let name_search= document.getElementById("name_search")
@@ -236,15 +253,14 @@
             alert("Invalid price")
         }                        
     })
+    */
 
     //handle sort
     let price_asc = document.getElementById("price-asc")
     let price_desc = document.getElementById("price-desc")
     let star_asc = document.getElementById("star-asc")
     let star_desc = document.getElementById("star-desc")
-
     
-
     price_asc.addEventListener('click', (e)=>{
         e.preventDefault()
         load_product_page(1, preCateID, preNameSearch, 'price-asc', preMin, preMax)
@@ -261,10 +277,7 @@
         e.preventDefault()
         load_product_page(1, preCateID, preNameSearch, 'rate-star-desc', preMin, preMax)
     })
-
-    */
-
-
+    
     function renderPage(total_page=1, cate_id=0, name, sort, min, max){
         let pagingHtml= ``
         for (let i=1; i<= Number(total_page); i++){
@@ -277,8 +290,6 @@
         activePage()
     }
     renderPage(total_page)
-
-
     function activePage(){
         let pages= document.getElementsByClassName("currentPage")
         let prePage= pages[0];
@@ -293,7 +304,6 @@
         }
     }
     {{!-- activePage() --}}
-
     /*
     let categories= document.getElementsByClassName("currentCategory")
     let preCate= categories[0];

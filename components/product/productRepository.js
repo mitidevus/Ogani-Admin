@@ -12,9 +12,9 @@ exports.getAllProduct = async (page = 1) => {
 
     let count = await this.countAllProducts();
     const data = await db.connection.execute(
-        `select * from product, category where product.category_Id = category.category_Id limit ${ITEM_PER_PAGE_PRODUCT} offset ${(Number(page) - 1) * ITEM_PER_PAGE_PRODUCT}`
+        `select product.*, category.name as category_name, brand.name as brand_name from product, category, brand where product.category_Id = category.category_Id and product.brand_Id = brand.id limit ${ITEM_PER_PAGE_PRODUCT} offset ${(Number(page) - 1) * ITEM_PER_PAGE_PRODUCT}`
     );
-
+    
     const result = {
         data: data[0],
         page: page,
@@ -51,11 +51,16 @@ exports.getAllCategory = async () => {
     return result[0];
 };
 
+exports.getAllBrand = async () => {
+    const result = await db.connection.execute("select * from brand");
+    return result[0];
+};
+
 exports.getSortedProductByPrice_ASC = async (page, cate_Id, nameFilter, min, max) => {
     //let count = this.countAllProducts();
     //const result = await db.connection.execute('select * from Product order by price where category_Id=?',[cate_Id]);
     let sqlCount = "select count(*) from Product";
-    let sqlData = "select * from Product";
+    let sqlData = "select * from Product, Category where Product.Category_Id = Category.Category_Id";
     let data;
     let count;
     console.log("name repo: ", nameFilter);
@@ -99,7 +104,7 @@ exports.getSortedProductByPrice_DESC = async (page, cate_Id, nameFilter, min, ma
     //let count = this.countAllProducts();
     //const result = await db.connection.execute('select * from Product order by price where category_Id=?',[cate_Id]);
     let sqlCount = "select count(*) from Product";
-    let sqlData = "select * from Product";
+    let sqlData = "select * from Product, Category where Product.Category_Id = Category.Category_Id";
     let data;
     let count;
     console.log("name repo: ", nameFilter);
@@ -141,7 +146,7 @@ exports.getSortedProductByRate_Star_ASC = async (page, cate_Id, nameFilter, min,
     //let count = this.countAllProducts();
     //const result = await db.connection.execute('select * from Product order by price where category_Id=?',[cate_Id]);
     let sqlCount = "select count(*) from Product";
-    let sqlData = "select * from Product";
+    let sqlData = "select * from Product, Category where Product.Category_Id = Category.Category_Id";
     let data;
     let count;
     console.log("name repo: ", nameFilter);
@@ -184,7 +189,7 @@ exports.getSortedProductByRate_Star_DESC = async (page, cate_Id, nameFilter, min
     // return result[0];
 
     let sqlCount = "select count(*) from Product";
-    let sqlData = "select * from Product";
+    let sqlData = "select * from Product, Category where Product.Category_Id = Category.Category_Id";
     let data;
     let count;
     console.log("name repo: ", nameFilter);
@@ -229,7 +234,7 @@ exports.getSortedProductByRate_Star_DESC = async (page, cate_Id, nameFilter, min
 
 exports.filter = async (page = 1, cate_Id = 0, nameFilter, min, max) => {
     let sqlCount = "select count(*) from Product";
-    let sqlData = "select * from Product";
+    let sqlData = "select * from Product, Category where Product.Category_Id = Category.Category_Id";
     let data;
     let count;
     console.log("name repo: ", nameFilter);
@@ -274,5 +279,25 @@ exports.filter = async (page = 1, cate_Id = 0, nameFilter, min, max) => {
 
 exports.getSortedProductByRelease_Date_Latest = async () => {
     const result = await db.connection.execute("select * from Product order by release_date");
+    return result[0];
+};
+
+
+exports.addProduct = async (product) => {
+    const result = await db.connection.execute(
+        "insert into product(name, description, remain_Amount, price, image, category_Id, rate_Star, brand_Id, release_Date, hot_product) values(?,?,?,?,?,?,?,?,?,?)",
+        [
+            product.name,
+            product.description,
+            product.quantity,
+            product.price,
+            product.image,
+            product.category_Id,
+            product.rate_Star,
+            product.brand_Id,
+            product.release_Date,
+            product.hot_product,
+        ]
+    );
     return result[0];
 };
