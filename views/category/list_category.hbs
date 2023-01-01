@@ -12,18 +12,11 @@
             <div class="col-12 col-md-6 col-xl-4 mb-3">
                 <div class="p-1 bg-light rounded rounded-pill shadow-lg d-flex justify-content-end">
                     <div class="input-group">
-                        <input
-                            id="myInput"
-                            type="search"
-                            onkeyup="mySearchFunction()"
-                            placeholder="Search category"
-                            aria-describedby="btn-search"
-                            class="form-control border-0 bg-light"
-                        />
+                        <input id="myInput" type="search" onkeyup="mySearchFunction()" placeholder="Search category"
+                            aria-describedby="btn-search" class="form-control border-0 bg-light" />
                         <div class="input-group-append">
                             <button id="btn-search" class="btn btn-link text-primary"><i
-                                    class="fa fa-search"
-                                ></i></button>
+                                    class="fa fa-search"></i></button>
                         </div>
                     </div>
                 </div>
@@ -46,37 +39,28 @@
 
                 <tbody id="list_category">
                     {{#each listCategory.data}}
-                        <tr>
-                            <td>{{this.category_Id}}</td>
-                            <td>{{this.name}}</td>
-                            <td>
-                                <img
-                                    src="{{this.image}}"
-                                    class="thumbnail img-responsive"
-                                    alt="image"
-                                    width="100"
-                                    height="100"
-                                    style="border-radius: 10px;"
-                                />
-                            </td>
-                            {{!-- test --}}
-                            <td>{{this.name}}</td> 
-                            <td>
-                                <div class="center">
-                                    <a href="/category">
-                                        <i class="far fa-edit" title="Edit category"></i>
-                                    </a>
+                    <tr>
+                        <td>{{this.category_Id}}</td>
+                        <td>{{this.name}}</td>
+                        <td>
+                            <img src="{{this.image}}" class="thumbnail img-responsive" alt="image" width="100"
+                                height="100" style="border-radius: 10px;" />
+                        </td>
+                        {{!-- test --}}
+                        <td>{{this.productsCount}}</td>
+                        <td>
+                            <div class="center">
+                                <a href="/category">
+                                    <i class="far fa-edit" title="Edit category"></i>
+                                </a>
 
-                                    <a href="/category" onclick="return confirm('Do you want to delete this category?')">
-                                        <i
-                                            class="fas fa-trash"
-                                            style="margin-left: 30px; color: red"
-                                            title="Delete category"
-                                        ></i>
-                                    </a>
-                                </div>
-                            </td>
-                        </tr>
+                                <a href="/category" onclick="return confirm('Do you want to delete this category?')">
+                                    <i class="fas fa-trash" style="margin-left: 30px; color: red"
+                                        title="Delete category"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
                     {{/each}}
                 </tbody>
             </table>
@@ -84,7 +68,7 @@
     </div>
 
     <p id="total_page" style="display: none;">{{listCategory.total_page}}</p>
-    <div id="page_component" class="d-flex justify-content-center category__pagination">
+    <div id="page_component" class="d-flex justify-content-center product__pagination">
     </div>
 
     {{! <div class="center">
@@ -117,25 +101,30 @@
 </div>
 
 <script>
-    let total_page= document.getElementById("total_page").innerText
+    function checkRun() {
+        console.log("Run");
+    }
+    checkRun();
+
+    let total_page = document.getElementById("total_page").innerText;
+    console.log("total_page", total_page);
     let pageComponent = document.getElementById("page_component")
-    
-    let list_category= document.getElementById("list_category")
+    let list_category = document.getElementById("list_category")
     //let preCateID=0;
-    let preNameSearch='';
+    let preNameSearch = '';
     //let preSort='';
     //let preMin=0;
     //let preMax=0;
     //function load_product_page(page=1, cate_id=preCateID, name=preNameSearch, sort=preSort, min=preMin, max=preMax)
-    function load_category_page(page=1, name=preNameSearch){
-    {
+    function load_category_page(page = 1, name = preNameSearch) {
         //console.log(page, cate_id, typeof name)
-        console.log(page typeof name)
-        
-        let htmlListCategory=``
-        $.getJSON(`/api/category?page=${page}&name=${name||''}`, function (categories) {
-            const data = categories.data.map(v=>{
-                return `
+        //console.log(page typeof name)
+
+        let htmlListCategory = ``;
+        try {
+            $.getJSON(`/api/category?page=${page}&name=${name}`, function (categories) {
+                const data = categories.data.map(v => {
+                    return `
                     <tr>
                         <td>${v.category_Id}</td>
                         <td>${v.name}</td>
@@ -149,7 +138,7 @@
                                 style="border-radius: 10px;"
                             />
                         </td>
-                        <td>${v.name}</td>
+                        <td>${v.productsCount}</td>
                         <td>
                             <div class="center">
                                 <a href="/category">
@@ -167,18 +156,20 @@
                         </td>
                     </tr>
                 `
-            })
-            htmlListCategory= data.join("")
-            list_category.innerHTML= htmlListCategory
+                });
+                htmlListCategory = data.join("")
+                list_category.innerHTML = htmlListCategory
 
-            if (name){
-                if (name!==preNameSearch){
-                    renderPage(categories.total_page, name)
+                if (name) {
+                    if (name !== preNameSearch) {
+                        renderPage(categories.total_page, name)
+                    }
+                    preNameSearch = name;
                 }
-                    preNameSearch= name;
-                
-            }
-        });
+            });
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     /*
@@ -234,34 +225,34 @@
     */
 
 
-    function renderPage(total_page=1, name){
-        let pagingHtml= ``
-        for (let i=1; i<= Number(total_page); i++){
-            pagingHtml+= `
-                <a href=""
-            class="currentPage" onclick="load_category_page(${i}, '${name||''}')">${i}</a>
+    function renderPage(total_page = 1, name) {
+        console.log('renderPage called');
+        let pagingHtml = ``
+        for (let i = 1; i <= Number(total_page); i++) {
+            pagingHtml += `
+            <a class="currentPage" onclick="load_category_page(${i},${name})">${i}</a>
             `
         }
-        pageComponent.innerHTML= pagingHtml
+        pageComponent.innerHTML = pagingHtml
         activePage()
     }
     renderPage(total_page)
 
 
-    function activePage(){
-        let pages= document.getElementsByClassName("currentPage")
-        let prePage= pages[0];
+    function activePage() {
+        let pages = document.getElementsByClassName("currentPage")
+        let prePage = pages[0];
         prePage.classList.add("is_active")
-        for (let page of pages){
-            page.addEventListener('click', (e)=>{
+        for (let page of pages) {
+            page.addEventListener('click', (e) => {
                 e.preventDefault()
                 e.target.classList.add("is_active")
                 prePage.classList.remove("is_active")
-                prePage= page
+                prePage = page
             })
         }
     }
-    {{!-- activePage() --}}
+    activePage()
 
     /*
     let categories= document.getElementsByClassName("currentCategory")

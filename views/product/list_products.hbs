@@ -123,6 +123,7 @@
 
 <script>
     let total_page= document.getElementById("total_page").innerText
+    console.log("total_page", total_page);
     let pageComponent = document.getElementById("page_component")
     
     let list_product= document.getElementById("list_product")
@@ -266,6 +267,7 @@
 
 
     function renderPage(total_page=1, cate_id=0, name, sort, min, max){
+        console.log('renderPage called');
         let pagingHtml= ``
         for (let i=1; i<= Number(total_page); i++){
             pagingHtml+= `

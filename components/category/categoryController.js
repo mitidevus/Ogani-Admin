@@ -26,9 +26,9 @@ exports.list_category = async (req, res) => {
         listCategory = await categoryService.filter(nameFilter);
         console.log("listCategory Filter", listCategory);
     }
-    
+
     const sumPage = listCategory.total_page;
-   
+
     let listcurrentPage = currentPage;
     let listLeftPage = [];
     let listRightPage = [];
@@ -45,11 +45,11 @@ exports.list_category = async (req, res) => {
     console.log("currentPage", currentPage);
 
     res.render("category/list_category", {
-        url_filter,
+        // url_filter,
         listCategory,
-        listLeftPage,
-        listcurrentPage,
-        listRightPage,
-        originalUrl: `/product/page/1/${qs.stringify(filter)}`,
+        // listLeftPage,
+        // listcurrentPage,
+        // listRightPage,
+        // originalUrl: `/product/page/1/${qs.stringify(filter)}`,
     });
 };
