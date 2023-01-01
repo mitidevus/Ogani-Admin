@@ -94,3 +94,32 @@
     background: #7fad39;
     color: white !important;
 }
+
+ul,
+li {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.sort-list {
+    padding: 6px 16px;
+    background-color: #28a745;
+    border: 1px solid #e1e1e1;
+    border-radius: 4px;
+    cursor: pointer;
+    position: absolute;
+    z-index: 1;
+}
+
+.sort-list:hover .sort-by {
+    display: block;
+}
+
+.sort-by {
+    display: none;
+}
+
+.sort-item {
+    color: #fff !important;
+}
