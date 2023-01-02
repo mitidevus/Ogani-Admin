@@ -76,3 +76,39 @@ exports.add_category = async (req, res) => {
     // categoryService.addCategory(name);
     // res.redirect("/category");
 };
+
+exports.show_edit_category = async (req, res) => {
+    const cate_id = req.params.id;
+    const category = await categoryService.getCategoryById(cate_id);
+    console.log("category:", category);
+    res.render("category/edit_category", { category });
+};
+
+exports.edit_category = async (req, res) => {
+    const { id: cate_id, name: cate_name, image: cate_img } = req.body;
+    console.log("cate_id", cate_id);
+    console.log("cate_name", cate_name);
+    console.log("cate_img", cate_img);
+
+    try {
+        const result = await categoryService.editCategory(cate_id, cate_name, cate_img);
+        console.log("edit_category_result", result);
+        res.redirect("/category");
+    } catch {
+        console.log(err);
+        res.render("category/edit_category", { error: err.message });
+    }
+
+    // try {
+    //     const result = await categoryService.editCategory(cate_name, cate_img);
+    //     console.log("edit_category_result", result);
+    //     res.redirect("/category");
+    // } catch (err) {
+    //     console.log(err);
+    //     res.render("category/edit_category", { error: err.message });
+    // }
+
+    // const { name } = req.body;
+    // categoryService.editCategory(name);
+    // res.redirect("/category");
+};

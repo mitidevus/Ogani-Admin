@@ -21,3 +21,11 @@ exports.addCategory = async (name, image) => {
   if (status) throw new Error("Category existed");
   return categoryRepository.addCategory(name, image);
 }
+
+exports.getCategoryById = async (id) => {
+  return categoryRepository.getCategoryById(id);
+};
+
+exports.editCategory = async (id, name, image) => {
+  return categoryRepository.updateCategory(id, name, image);
+};

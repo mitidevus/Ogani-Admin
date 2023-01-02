@@ -100,3 +100,14 @@ exports.addCategory = async (name, image) => {
     console.log("sql_add_result: ", result[0]);
     return result[0];
 };
+
+exports.getCategoryById = async (id) => {
+    const result = await db.connection.execute("select * from category where category_Id = ?", [id]);
+    return result[0][0];
+};
+
+exports.updateCategory = async (id, name, image) => {
+    const result = await db.connection.execute("update category set name = ?, image = ? where category_Id = ?", [name, image, id]);
+    console.log("sql_update_result: ", result[0]);
+    return result[0];
+};
