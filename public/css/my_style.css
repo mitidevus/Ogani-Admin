@@ -123,3 +123,11 @@ li {
 .sort-item {
     color: #fff !important;
 }
+
+.background-wrapper {
+    background-image: url("https://th.bing.com/th/id/R.a9890c003edf54852978d4702358a2bf?rik=M6Sw6Fh7%2fft3FQ&pid=ImgRaw&r=0");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 100vh;
+}
