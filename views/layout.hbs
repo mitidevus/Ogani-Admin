@@ -41,54 +41,10 @@
 
         <p class="navbar-text" style="margin-top: auto;">
             Welcome
-            <b> Admin123</b>
+            <b> {{user.fullname}}</b>
         </p>
 
-        <div class="notifications">
-            <button type="button" class="icon_wrap">
-                <i class="fas fa-bell"></i>
-                <span style="font-size: 10px;" class="icon-button__badge">
-                    1
-                </span>
-            </button>
-            <div class="notification_dd">
-                <h5 class="text-center mt-2">Notification</h5>
-                <hr class="mt-0 mb-0" />
-                <ul class="notification_ul">
-                    <li class="starbucks success">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div class="notify_data">
-                                <div class="title">Order</div>
-                                <div class="sub_title">
-                                    Customer Do Minh Tri placed an order at
-                                    Jan 02 2022 08:32:51
-                                </div>
-                            </div>
-                            <div class="notify_status">
-                                <a title="chưa xem" href="#"><i class="fas fa-circle"
-                                        style="font-size: 12px; color: rgb(5, 126, 173)"></i></a>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </div>
-
-        <div class="popup">
-            <div class="shadow"></div>
-            <div class="inner_popup">
-                <div class="notification_dd">
-                    <ul class="all-notification_ul">
-                        <li class="title">
-                            <p>All Notifications</p>
-                            <p class="close">
-                                <i class="fas fa-times" aria-hidden="true"></i>
-                            </p>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+       
 
         <!-- Navbar-->
         <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
