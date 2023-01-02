@@ -71,10 +71,6 @@ exports.add_category = async (req, res) => {
         console.log(err);
         res.render("category/add_category", { error: err.message });
     }
-
-    // const { name } = req.body;
-    // categoryService.addCategory(name);
-    // res.redirect("/category");
 };
 
 exports.show_edit_category = async (req, res) => {
@@ -98,17 +94,4 @@ exports.edit_category = async (req, res) => {
         console.log(err);
         res.render("category/edit_category", { error: err.message });
     }
-
-    // try {
-    //     const result = await categoryService.editCategory(cate_name, cate_img);
-    //     console.log("edit_category_result", result);
-    //     res.redirect("/category");
-    // } catch (err) {
-    //     console.log(err);
-    //     res.render("category/edit_category", { error: err.message });
-    // }
-
-    // const { name } = req.body;
-    // categoryService.editCategory(name);
-    // res.redirect("/category");
 };
