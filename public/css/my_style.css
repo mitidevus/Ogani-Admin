@@ -54,6 +54,7 @@
     color: #fff;
 }
 
+.category__pagination,
 .product__pagination,
 .blog__pagination {
     padding-top: 10px;
