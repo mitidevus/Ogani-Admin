@@ -53,3 +53,26 @@ exports.list_category = async (req, res) => {
         // originalUrl: `/product/page/1/${qs.stringify(filter)}`,
     });
 };
+
+exports.show_add_category = (req, res) => {
+    res.render("category/add_category");
+};
+
+exports.add_category = async (req, res) => {
+    const { name: cate_name, image: cate_img } = req.body;
+    console.log("cate_name", cate_name);
+    console.log("cate_img", cate_img);
+
+    try {
+        const result = await categoryService.addCategory(cate_name, cate_img);
+        console.log("add_category_result", result);
+        res.redirect("/category");
+    } catch (err) {
+        console.log(err);
+        res.render("category/add_category", { error: err.message });
+    }
+
+    // const { name } = req.body;
+    // categoryService.addCategory(name);
+    // res.redirect("/category");
+};

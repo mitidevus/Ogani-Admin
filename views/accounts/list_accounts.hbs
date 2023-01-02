@@ -2,7 +2,7 @@
     <div class="container-fluid">
         <div id="search-form" class="row mt-3 justify-content-start">
 
-             <div class="col-12 col-md-6 col-xl-8 mb-3">
+            <div class="col-12 col-md-6 col-xl-8 mb-3">
                 <div class="d-flex">
                     <a class="btn btn-primary btn-block gradient-custom-4">
                         <i class="fas fa-plus-circle"></i>
@@ -27,23 +27,13 @@
             </div>
 
             <div class="col-12 col-md-6 col-xl-4 mb-3">
-                <div
-                    class="p-1 bg-light rounded rounded-pill shadow-lg d-flex justify-content-end"
-                >
+                <div class="p-1 bg-light rounded rounded-pill shadow-lg d-flex justify-content-end">
                     <div class="input-group">
-                        <input
-                            id="myInput"
-                            type="search"
-                            placeholder="Nhập email bạn cần tìm?"
-                            aria-describedby="btn-search"
-                            class="form-control border-0 bg-light"
-                        />
+                        <input id="myInput" type="search" placeholder="Nhập email bạn cần tìm?"
+                            aria-describedby="btn-search" class="form-control border-0 bg-light" />
                         <div class="input-group-append">
-                            <button
-                                onclick="findUserByEmailOrName()"
-                                id="btn-search"
-                                class="btn btn-link text-primary"
-                            ><i class="fa fa-search"></i></button>
+                            <button onclick="findUserByEmailOrName()" id="btn-search"
+                                class="btn btn-link text-primary"><i class="fa fa-search"></i></button>
                         </div>
                     </div>
                 </div>
@@ -53,51 +43,40 @@
 
     <div class="container-fluid mt-4">
         <div class="table-responsive">
-            <table
-                id="myTable"
-                class="table table-hover table-striped table-bordered"
-            >
+            <table id="myTable" class="table table-hover table-striped table-bordered">
                 <thead>
                     <tr>
                         <th>Email</th>
                         <th>Name</th>
                         <th>Address</th>
-                        
+
                         <th>Fix</th>
                     </tr>
                 </thead>
 
                 <tbody id="tbody_accounts">
                     {{#each list_accounts.data}}
-                        <tr>
-                            <td>{{this.email}}</td>
-                            <td>{{this.fullname}}</td>
-                            <td>{{this.address}}</td>
-                            <td>
-                                <div class="row">
-                                    <div class="col-3">
-                                        <a class="ban" onclick="banHandle({{this.user_Id}})">
-                                            {{#if this.isActive}}
-                                                <i
-                                                    class="fas fa-user-lock"
-                                                    style="color: red;"
-                                                    title="Ban"
-                                                ></i>
-                                            {{else }}
-                                                <i
-                                                    class="fas fa-check"
-                                                    style="color: green"
-                                                    title="Unban"
-                                                ></i>
-                                            {{/if}}
-                                        </a>
-                                    </div>
-                                    <div class="col-3">
-                                       
-                                    </div>
+                    <tr>
+                        <td>{{this.email}}</td>
+                        <td>{{this.fullname}}</td>
+                        <td>{{this.address}}</td>
+                        <td>
+                            <div class="row">
+                                <div class="col-3">
+                                    <a class="ban" onclick="banHandle({{this.user_Id}})">
+                                        {{#if this.isActive}}
+                                        <i class="fas fa-user-lock" style="color: red;" title="Ban"></i>
+                                        {{else }}
+                                        <i class="fas fa-check" style="color: green" title="Unban"></i>
+                                        {{/if}}
+                                    </a>
                                 </div>
-                            </td>
-                        </tr>
+                                <div class="col-3">
+
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
                     {{/each}}
                 </tbody>
             </table>
@@ -117,7 +96,7 @@
 </div>
 
 <script>
-    let total_page= document.getElementById("total_page").innerText
+    let total_page = document.getElementById("total_page").innerText
     let pageComponent = document.getElementById("page_component")
     let list_account = document.getElementById("tbody_accounts")
     let myInput = document.getElementById("myInput")
@@ -129,36 +108,36 @@
 
 
 
-    name_email_asc.addEventListener("click", (e)=>{
+    name_email_asc.addEventListener("click", (e) => {
         load_account(1, preKeySearch, "name-mail-asc")
     })
-    name_email_desc.addEventListener("click", (e)=>{
+    name_email_desc.addEventListener("click", (e) => {
         load_account(1, preKeySearch, "name-mail-desc")
     })
-    day_asc.addEventListener("click", (e)=>{
+    day_asc.addEventListener("click", (e) => {
         load_account(1, preKeySearch, "day-asc")
     })
-    day_desc.addEventListener("click", (e)=>{
+    day_desc.addEventListener("click", (e) => {
         load_account(1, preKeySearch, "day-desc")
     })
-    
-    function findUserByEmailOrName(){
+
+    function findUserByEmailOrName() {
         let keySearch = myInput.value
-        
-        if (!keySearch){
+
+        if (!keySearch) {
             console.log("Search for: ", keySearch)
-            preKeySearch=keySearch
+            preKeySearch = keySearch
         }
         load_account(1, keySearch)
     }
 
-    let preKeySearch='';
-    let preSort=''
-    let prePage=1;
-    function load_account(page=prePage, keySearch=preKeySearch, sort=preSort){
-        let htmlListAccounts=``
+    let preKeySearch = '';
+    let preSort = ''
+    let prePage = 1;
+    function load_account(page = prePage, keySearch = preKeySearch, sort = preSort) {
+        let htmlListAccounts = ``
         $.getJSON(`/api/accounts?page=${page}&search=${keySearch}&sort=${sort}`, function (accounts) {
-            const data= accounts.data.map(v=>{
+            const data = accounts.data.map(v => {
                 return `
                     <tr>
                         <td>${v.email}</td>
@@ -171,19 +150,19 @@
                                         class="ban"
                                         onclick="banHandle(${v.user_Id})"                                      
                                     >
-                                        ${v.isActive?
-                                                `<i
+                                        ${v.isActive ?
+                        `<i
                                                     class="fas fa-user-lock"
                                                     style="color: red;"
                                                     title="Ban"
                                                 ></i>`
-                                            :
-                                                `<i
+                        :
+                        `<i
                                                     class="fas fa-check"
                                                     style="color: green"
                                                     title="Unban"
                                                 ></i>`
-                                        }
+                    }
                                     </a>
                                 </div>
                                 <div class="col-3">
@@ -194,62 +173,62 @@
                     </tr>
                 `
             })
-            htmlListAccounts= data.join("")
-            list_account.innerHTML= htmlListAccounts
+            htmlListAccounts = data.join("")
+            list_account.innerHTML = htmlListAccounts
 
-        
-            if (prePage!==page){
-                prePage=page
+
+            if (prePage !== page) {
+                prePage = page
             }
-        
 
-            if (keySearch){
+
+            if (keySearch) {
                 console.log("key: ", keySearch)
                 console.log("pre key: ", preKeySearch)
-                if (preKeySearch!==keySearch){
+                if (preKeySearch !== keySearch) {
                     renderPage(accounts.total_page, keySearch)
                     preKeySearch = keySearch
                 }
-                
+
             }
-            if (sort){
-                if (preSort!==sort){
+            if (sort) {
+                if (preSort !== sort) {
                     renderPage(accounts.total_page, keySearch, sort)
-                    preSort= sort
+                    preSort = sort
                 }
             }
         })
     }
 
-    function renderPage(total_page=1, keySearch, sort){
-        let pagingHtml= ``
-        for (let i=1; i<= Number(total_page); i++){
-            pagingHtml+= `
-                <a class="currentPage" onclick="load_account(${i}, '${keySearch||''}', '${sort||''}')">${i}</alass=>
+    function renderPage(total_page = 1, keySearch, sort) {
+        let pagingHtml = ``
+        for (let i = 1; i <= Number(total_page); i++) {
+            pagingHtml += `
+                <a class="currentPage" onclick="load_account(${i}, '${keySearch || ''}', '${sort || ''}')">${i}</alass=>
             `
         }
-        pageComponent.innerHTML= pagingHtml
+        pageComponent.innerHTML = pagingHtml
         activePage()
     }
     renderPage(total_page)
 
-    function activePage(){
-        let pages= document.getElementsByClassName("currentPage")
-        let prePage= pages[0];
+    function activePage() {
+        let pages = document.getElementsByClassName("currentPage")
+        let prePage = pages[0];
         prePage.classList.add("is_acctive")
-        for (let page of pages){
-            page.addEventListener('click', (e)=>{
+        for (let page of pages) {
+            page.addEventListener('click', (e) => {
                 e.preventDefault()
                 e.target.classList.add("is_acctive")
                 prePage.classList.remove("is_acctive")
-                prePage= page
+                prePage = page
             })
         }
     }
 
 
-    var banHandle = (id)=>{
-        $.getJSON(`/api/accounts/ban/${id}`, function(err, data){
+    var banHandle = (id) => {
+        $.getJSON(`/api/accounts/ban/${id}`, function (err, data) {
             console.log("data:  ", data)
             load_account(prePage, preKeySearch, preSort)
         })
