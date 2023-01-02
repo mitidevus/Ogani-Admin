@@ -90,14 +90,14 @@
                             <td>
                                 <div class="center">
                                     <a href="/product/update/{{this.product_Id}}">
-                                        <i class="far fa-edit" title="Chỉnh sửa sản phẩm"></i>
+                                        <i class="far fa-edit" title="Update product"></i>
                                     </a>
 
-                                    <a href="/product" onclick="return confirm('Bạn có muốn xóa không?')">
+                                    <a href="/product/delete/{{this.product_Id}}" onclick="return confirm('Do you want to delete this product?')">
                                         <i
                                             class="fas fa-trash"
                                             style="margin-left: 30px; color: red"
-                                            title="Xóa sản phẩm"
+                                            title="Delete product"
                                         ></i>
                                     </a>
                                 </div>
@@ -182,13 +182,13 @@
                         <td>
                             <div class="center">
                                 <a href="/product/update/${v.product_Id}">
-                                    <i class="far fa-edit" title="Chỉnh sửa sản phẩm"></i>
+                                    <i class="far fa-edit" title="Update product"></i>
                                 </a>
-                                <a href="/product" onclick="return confirm('Bạn có muốn xóa không?')">
+                                <a href="/product/delete/${v.product_Id}" onclick="return confirm('Do you want to delete this product?')">
                                     <i
                                         class="fas fa-trash"
                                         style="margin-left: 30px; color: red"
-                                        title="Xóa sản phẩm"
+                                        title="Delete product"
                                     ></i>
                                 </a>
                             </div>

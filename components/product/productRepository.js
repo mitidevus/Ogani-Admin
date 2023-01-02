@@ -325,3 +325,8 @@ exports.updateProduct = async (product) => {
     );
     return result[0];
 }
+
+exports.deleteProduct = async (id) => {
+    const result = await db.connection.execute("delete from product where product_Id = ?", [id]);
+    return result[0];
+}

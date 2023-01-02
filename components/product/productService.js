@@ -55,3 +55,7 @@ exports.addProduct = async (product) => {
 exports.updateProduct = async (product) => {
     return productRepository.updateProduct(product);
 }
+
+exports.deleteProduct = async (id) => {
+    return productRepository.deleteProduct(id);
+}

@@ -113,6 +113,7 @@ exports.add_product_post = async (req, res) => {
         hot_product: false,
     };
     await productService.addProduct(product);
+    console.log("Add product\n", product);
     res.redirect("/product");
 };
 
@@ -140,5 +141,13 @@ exports.update_product_post = async (req, res) => {
         hot_product: hot_product === '1' ? true : false,
     };
     await productService.updateProduct(product);
+    console.log("Update product\n", product);
     res.redirect("/product");
 }
+
+exports.delete_product = async (req, res) => {
+    const id = req.params.id;
+    await productService.deleteProduct(id);
+    console.log("Delete product, id: " + id);
+    res.redirect("/product");
+};
