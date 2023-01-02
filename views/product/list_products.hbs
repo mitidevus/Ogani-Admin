@@ -3,28 +3,56 @@
         <div id="search-form" class="row mt-3 justify-content-start">
 
             <div class="col-12 col-md-6 col-xl-8 mb-3">
-                <div class="d-flex">
-                    <a class="btn btn-primary btn-block gradient-custom-4" href="/product/add">
+                <div class="d-flex row justify-content-start">
+                    
+                    <div class="col">
+                        <a class="btn btn-primary btn-block gradient-custom-4" href="/product/add">
                         <i class="fas fa-plus-circle"></i>
                         Add product
                     </a>
-                    <div class="filter__sort ms-3">
-                        <div class="sort-list">
-                            <span class="sort-item">Sort by</span>
-                            <ul class="sort-by">
-                                <li><a href="" id="default-sort" class="sort-item">
-                                        <span class="fw-bold">Default</span></a></li>
-                                <li><a href="" id="price-asc" class="sort-item">Price:
-                                        <span class="fw-bold">Ascending</span></a></li>
-                                <li><a href="" id="price-desc" class="sort-item">Price:
-                                        <span class="fw-bold">Descending</span></a></li>
-                                <li><a href="" id="star-asc" class="sort-item">Rate star:
-                                        <span class="fw-bold">Ascending</span></a></li>
-                                <li><a href="" id="star-desc" class="sort-item">Rate star:
-                                        <span class="fw-bold">Descending</span></a></li>
-                            </ul>
+                    </div>
+
+                    <div class="col">
+                        <div class="filter__sort ms-3">
+                            <div class="sort-list">
+                                <span class="sort-item">Sort by</span>
+                                <ul class="sort-by">
+                                    <li><a href="" id="default-sort" class="sort-item">
+                                            <span class="fw-bold">Default</span></a></li>
+
+                                    <li><a href="" id="price-asc" class="sort-item">Price:
+                                            <span class="fw-bold">Ascending</span></a></li>
+
+                                    <li><a href="" id="price-desc" class="sort-item">Price:
+                                            <span class="fw-bold">Descending</span></a></li>
+
+                                    <li><a href="" id="star-asc" class="sort-item">Rate star:
+                                            <span class="fw-bold">Ascending</span></a></li>
+
+                                    <li><a href="" id="star-desc" class="sort-item">Rate star:
+                                            <span class="fw-bold">Descending</span></a></li>
+
+                                </ul>
+                            </div>
                         </div>
                     </div>
+
+                    <div class="col">
+                        <div class="filter__sort ms-3">
+                            <div class="sort-list">
+                                <span class="sort-item">Filter by Category</span>
+                                <ul class="sort-by">
+                                    <li><a href="" id="default-sort" class="sort-item">
+                                            <span class="fw-bold">Default</span></a></li>
+                                    {{#each listCategory}}
+                                    <li><a href="" class="sort-item currentCategory" onclick="load_product_page(1, {{this.category_Id}})">
+                                            <span class="fw-bold">{{this.name}}</span></a></li>
+                                    {{/each}}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
 
@@ -250,7 +278,6 @@
     let star_asc = document.getElementById("star-asc")
     let star_desc = document.getElementById("star-desc")
 
-
     default_sort.addEventListener('click', (e) => {
         e.preventDefault()
         load_product_page(1, preCateID, preNameSearch, 'default', preMin, preMax)
@@ -297,17 +324,18 @@
             })
         }
     }
-    /*
+    
+    
     let categories= document.getElementsByClassName("currentCategory")
-    let preCate= categories[0];
-    {{!-- preCate.classList.add("is_active") --}}
+    let preCate;
+    //preCate.classList.add("is_active")
     for (let cate of categories){
         cate.addEventListener('click', (e)=>{
             e.preventDefault()
-            e.target.classList.add("is_active")
-            preCate.classList.remove("is_active")
+            {{!-- e.target.classList.add("is_active")
+            preCate.classList.remove("is_active") --}}
             preCate= cate
         })
     }
-    */
+    
 </script>

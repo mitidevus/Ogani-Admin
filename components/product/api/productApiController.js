@@ -23,13 +23,7 @@ exports.getApiProducts = async (req, res) => {
     } else if (filter === "rate-star-asc") {
         listProducts = await productService.getSortedProductByRate_Star_ASC(currentPage, cate_id, nameFilter, min, max);
     } else if (filter === "rate-star-desc") {
-        listProducts = await productService.getSortedProductByRate_Star_DESC(
-            currentPage,
-            cate_id,
-            nameFilter,
-            min,
-            max
-        );
+        listProducts = await productService.getSortedProductByRate_Star_DESC(currentPage, cate_id, nameFilter, min, max);
     } else {
         listProducts = await productService.filter(currentPage, cate_id, nameFilter, min, max);
     }

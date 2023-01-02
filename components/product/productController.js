@@ -28,10 +28,7 @@ exports.list_product = async (req, res) => {
         listProducts = await productService.filter(nameFilter);
         console.log("listProducts Filter", listProducts);
     }
-    if (filter === "default") {
-        if (listProducts.length === 0) listProducts = await productService.getAllProduct(currentPage);
-        else listProducts = await productService.getAllProduct(currentPage);
-    } else if (filter === "price-asc") {
+    if (filter === "price-asc") {
         if (listProducts.length === 0) listProducts = await productService.getSortedProductByPrice_ASC();
         else listProducts.sort((a, b) => a.price - b.price);
     } else if (filter === "price-desc") {
