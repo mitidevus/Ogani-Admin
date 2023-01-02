@@ -3,21 +3,21 @@
         <div id="search-form" class="row mt-3 justify-content-start">
 
             <div class="col-12 col-md-6 col-xl-8 mb-3">
-                <a class="btn btn-primary btn-block gradient-custom-4" href="/category/add">
+                <a class="btn btn-primary btn-block gradient-custom-4" href="/brand/add">
                     <i class="fas fa-plus-circle"></i>
-                    Add category
+                    Add brand
                 </a>
             </div>
 
             <div class="col-12 col-md-6 col-xl-4 mb-3">
                 <div class="p-1 bg-light rounded rounded-pill shadow-lg d-flex justify-content-end">
                     <div class="input-group">
-                        <input id="myInput" type="search" placeholder="Search category" aria-describedby="btn-search"
+                        <input id="myInput" type="search" placeholder="Search brand" aria-describedby="btn-search"
                             class="form-control border-0 bg-light" />
                         <div class="input-group-append">
                             {{!-- <button id="btn-search" class="btn btn-link text-primary"><i
                                     class="fa fa-search"></i></button> --}}
-                            <button onclick="findCategoryByName()" id="btn-search" class="btn btn-link text-primary"><i
+                            <button onclick="findBrandByName()" id="btn-search" class="btn btn-link text-primary"><i
                                     class="fa fa-search"></i></button>
                         </div>
                     </div>
@@ -32,17 +32,17 @@
                 <thead>
                     <tr>
                         <th>Id</th>
-                        <th>Category name</th>
+                        <th>Brand name</th>
                         <th>Image</th>
                         <th>Number of Product</th>
                         <th>Edit</th>
                     </tr>
                 </thead>
 
-                <tbody id="list_category">
-                    {{#each listCategory.data}}
+                <tbody id="list_brand">
+                    {{#each listBrand.data}}
                     <tr>
-                        <td>{{this.category_Id}}</td>
+                        <td>{{this.id}}</td>
                         <td>{{this.name}}</td>
                         <td>
                             <img src="{{this.image}}" class="thumbnail img-responsive" alt="image" width="100"
@@ -52,8 +52,8 @@
                         <td>{{this.productsCount}}</td>
                         <td>
                             <div class="center">
-                                <a href="/category/edit/{{this.category_Id}}">
-                                    <i class="far fa-edit" title="Edit category"></i>
+                                <a href="/brand/edit/{{this.id}}">
+                                    <i class="far fa-edit" title="Edit brand"></i>
                                 </a>
                             </div>
                         </td>
@@ -64,7 +64,7 @@
         </div>
     </div>
 
-    <p id="total_page" style="display: none;">{{listCategory.total_page}}</p>
+    <p id="total_page" style="display: none;">{{listBrand.total_page}}</p>
     <div id="page_component" class="d-flex justify-content-center product__pagination">
     </div>
 
@@ -100,17 +100,17 @@
 <script>
     let total_page = document.getElementById("total_page").innerText;
     let pageComponent = document.getElementById("page_component");
-    let list_category = document.getElementById("list_category");
+    let list_brand = document.getElementById("list_brand");
     let myInput = document.getElementById("myInput")
 
-    function findCategoryByName() {
+    function findBrandByName() {
         let nameSearch = myInput.value
 
         if (!nameSearch) {
             console.log("Search for: ", nameSearch)
             preNameSearch = nameSearch
         }
-        load_category_page(1, nameSearch)
+        load_brand_page(1, nameSearch)
     }
 
     //let preCateID=0;
@@ -119,17 +119,17 @@
     //let preMin=0;
     //let preMax=0;
     //function load_product_page(page=1, cate_id=preCateID, name=preNameSearch, sort=preSort, min=preMin, max=preMax)
-    function load_category_page(page = 1, name = preNameSearch) {
+    function load_brand_page(page = 1, name = preNameSearch) {
         //console.log(page, cate_id, typeof name)
         //console.log(page typeof name)
 
-        let htmlListCategory = ``;
+        let htmlListBrand = ``;
         try {
-            $.getJSON(`/api/category?page=${page}&name=${name}`, function (categories) {
-                const data = categories.data.map(v => {
+            $.getJSON(`/api/brand?page=${page}&name=${name}`, function (brands) {
+                const data = brands.data.map(v => {
                     return `
                     <tr>
-                        <td>${v.category_Id}</td>
+                        <td>${v.id}</td>
                         <td>${v.name}</td>
                         <td>
                             <img
@@ -144,16 +144,16 @@
                         <td>${v.productsCount}</td>
                         <td>
                             <div class="center">
-                                <a href="/category/edit/${v.category_Id}">
-                                    <i class="far fa-edit" title="Edit category"></i>
+                                <a href="/brand/edit/${v.id}">
+                                    <i class="far fa-edit" title="Edit brand"></i>
                                 </a>
                             </div>
                         </td>
                     </tr>
                 `
                 });
-                htmlListCategory = data.join("")
-                list_category.innerHTML = htmlListCategory
+                htmlListBrand = data.join("")
+                list_brand.innerHTML = htmlListBrand
 
                 if (name) {
                     if (name !== preNameSearch) {
@@ -225,7 +225,7 @@
         let pagingHtml = ``
         for (let i = 1; i <= Number(total_page); i++) {
             pagingHtml += `
-            <a class="currentPage" onclick="load_category_page(${i},${name})">${i}</a>
+            <a class="currentPage" onclick="load_brand_page(${i},${name})">${i}</a>
             `
         }
         pageComponent.innerHTML = pagingHtml
@@ -250,7 +250,7 @@
     activePage()
 
     /*
-    let categories= document.getElementsByClassName("currentCategory")
+    let categories= document.getElementsByClassName("currentBrand")
     let preCate= categories[0];
     {{!-- preCate.classList.add("is_active") --}}
     for (let cate of categories){

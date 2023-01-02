@@ -11,11 +11,14 @@ const authRouter = require("./components/auth");
 const accountsRouter = require("./components/accounts");
 const productRouter = require("./components/product");
 const categoryRouter = require("./components/category");
-const producerRouter = require("./components/producer");
+const brandRouter = require("./components/brand");
 const orderRouter = require("./components/order");
+
 const apiProductRouter = require('./components/product/api');
 const apiAccountRouter = require('./components/accounts/api');
-const apiCategoryRouter = require('./components/category/api')
+const apiCategoryRouter = require('./components/category/api');
+const apiBrandRouter = require('./components/brand/api');
+
 const passport = require("./components/auth/passport");
 const auth = require("./middlewares/auth");
 const { SESSION_SECRET } = require("./config/index.js");
@@ -50,14 +53,14 @@ app.use("/", authRouter);
 app.use("/accounts", accountsRouter);
 app.use("/product", productRouter);
 app.use("/category", categoryRouter);
-app.use("/producer", producerRouter);
+app.use("/brand", brandRouter);
 app.use("/order", orderRouter);
 
 // API
 app.use('/api/product', apiProductRouter);
 app.use('/api/accounts', apiAccountRouter);
 app.use('/api/category', apiCategoryRouter);
-
+app.use('/api/brand', apiBrandRouter);
 
 
 // catch 404 and forward to error handler

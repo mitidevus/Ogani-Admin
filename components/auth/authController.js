@@ -120,6 +120,7 @@ exports.showLoginForm = (req, res) => {
 
 exports.logout = (req, res) => {
     req.logout(function (err) {
+        console.log(req.session);
         if (err) {
             return next(err);
         }
