@@ -18,6 +18,7 @@ exports.checkUserCredential = async (email, password) => {
     const user = await authRepository.getUserByEmail(email);
     // console.log("fullname: ", user.fullname)
     if (!user) return null;
+    if (!user.isActive || !user.isAdmin) return null;
 
     let temp = await bcrypt.compare(password, user.password);
 

@@ -4,10 +4,6 @@
 
             <div class="col-12 col-md-6 col-xl-8 mb-3">
                 <div class="d-flex">
-                    <a class="btn btn-primary btn-block gradient-custom-4">
-                        <i class="fas fa-plus-circle"></i>
-                        Update
-                    </a>
                     <div class="filter__sort ms-3">
                         <div class="sort-list">
                             <span class="sort-item">Sort by</span>
@@ -124,11 +120,17 @@
     function findUserByEmailOrName() {
         let keySearch = myInput.value
 
-        if (!keySearch) {
-            console.log("Search for: ", keySearch)
-            preKeySearch = keySearch
+        if (keySearch === "")
+            alert("Please input a name or email or reload page")
+        else {
+            if (!keySearch) {
+                console.log("Search for: ", keySearch)
+                preKeySearch = keySearch
+            }
+            load_account(1, keySearch)
         }
-        load_account(1, keySearch)
+
+
     }
 
     let preKeySearch = '';
@@ -228,8 +230,8 @@
 
 
     var banHandle = (id) => {
+        if (id !== {{ user.user_Id }})
         $.getJSON(`/api/accounts/ban/${id}`, function (err, data) {
-            console.log("data:  ", data)
             load_account(prePage, preKeySearch, preSort)
         })
     }
