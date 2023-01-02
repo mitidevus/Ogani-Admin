@@ -12,6 +12,8 @@
                         <div class="sort-list">
                                     <span class="sort-item">Sort by</span>
                                     <ul class="sort-by">
+                                        <li><a href="" id="default-sort" class="sort-item">
+                                                <span class="fw-bold">Default</span></a></li>
                                         <li><a href="" id="price-asc" class="sort-item">Price:
                                                 <span class="fw-bold">Ascending</span></a></li>
                                         <li><a href="" id="price-desc" class="sort-item">Price:
@@ -87,7 +89,7 @@
                             <td class="text-center">{{this.rate_Star}}</td>
                             <td>
                                 <div class="center">
-                                    <a href="/product">
+                                    <a href="/product/update/{{this.product_Id}}">
                                         <i class="far fa-edit" title="Chỉnh sửa sản phẩm"></i>
                                     </a>
 
@@ -179,7 +181,7 @@
 
                         <td>
                             <div class="center">
-                                <a href="/product">
+                                <a href="/product/update/${v.product_Id}">
                                     <i class="far fa-edit" title="Chỉnh sửa sản phẩm"></i>
                                 </a>
                                 <a href="/product" onclick="return confirm('Bạn có muốn xóa không?')">
@@ -256,11 +258,17 @@
     */
 
     //handle sort
+    let default_sort = document.getElementById("default-sort")
     let price_asc = document.getElementById("price-asc")
     let price_desc = document.getElementById("price-desc")
     let star_asc = document.getElementById("star-asc")
     let star_desc = document.getElementById("star-desc")
     
+
+    default_sort.addEventListener('click', (e)=>{
+        e.preventDefault()
+        load_product_page(1, preCateID, preNameSearch, 'default', preMin, preMax)
+    })
     price_asc.addEventListener('click', (e)=>{
         e.preventDefault()
         load_product_page(1, preCateID, preNameSearch, 'price-asc', preMin, preMax)

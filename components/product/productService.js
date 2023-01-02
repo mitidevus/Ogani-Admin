@@ -8,6 +8,10 @@ exports.getAllProduct = async (page=1) => {
   return productRepository.getAllProduct(page);
 }
 
+exports.getProductById = async (id) => {
+    return productRepository.getProductById(id);
+}
+
 exports.getProductByCategory = async (page=1, cate_Id) => {
     return productRepository.getProductByCategory(page,cate_Id)
 }
@@ -46,4 +50,8 @@ exports.getSortedProductByRelease_Date_Latest = () => {
 
 exports.addProduct = async (product) => {
     return productRepository.addProduct(product);
+}
+
+exports.updateProduct = async (product) => {
+    return productRepository.updateProduct(product);
 }

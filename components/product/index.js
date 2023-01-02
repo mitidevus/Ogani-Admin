@@ -9,5 +9,9 @@ router.get("/add", productController.add_product_get);
 
 router.post("/add", productController.add_product_post);
 
+router.get("/update/:id", productController.update_product_get);
+
+router.post("/update/:id", productController.update_product_post);
+
 module.exports = router;
 

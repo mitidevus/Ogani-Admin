@@ -28,10 +28,12 @@ exports.list_product = async (req, res) => {
         listProducts = await productService.filter(nameFilter);
         console.log("listProducts Filter", listProducts);
     }
-    if (filter === "price-asc") {
+    if (filter === "default") {
+        if (listProducts.length === 0) listProducts = await productService.getAllProduct(currentPage);
+        else listProducts = await productService.getAllProduct(currentPage);
+    } else if (filter === "price-asc") {
         if (listProducts.length === 0) listProducts = await productService.getSortedProductByPrice_ASC();
         else listProducts.sort((a, b) => a.price - b.price);
-        console.log("haha");
     } else if (filter === "price-desc") {
         if (listProducts.length === 0) listProducts = await productService.getSortedProductByPrice_DESC();
         else listProducts.sort((a, b) => b.price - a.price);
@@ -110,6 +112,33 @@ exports.add_product_post = async (req, res) => {
         release_Date: new Date(),
         hot_product: false,
     };
-    console.log(product);
+    await productService.addProduct(product);
     res.redirect("/product");
 };
+
+exports.update_product_get = async (req, res) => {
+    const id = req.params.id;
+    let listCategory = await productService.getAllCategory();
+    let listBrand = await productService.getAllBrand();
+    let product = await productService.getProductById(id);
+    console.log(product);
+    res.render("product/update_product", { product, listCategory, listBrand });
+};
+
+exports.update_product_post = async (req, res) => {
+    const { id, name, description, quantity, price, image, category_Id, brand_Id, hot_product } = req.body;
+    const product = {
+        id,
+        name,
+        description,
+        quantity,
+        price,
+        image,
+        category_Id: parseInt(category_Id),
+        rate_Star: 5,
+        brand_Id: parseInt(brand_Id),
+        hot_product: hot_product === '1' ? true : false,
+    };
+    await productService.updateProduct(product);
+    res.redirect("/product");
+}
