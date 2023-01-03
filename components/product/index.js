@@ -6,15 +6,15 @@ const productController = require("./productController");
 
 router.get("/", auth, productController.list_product);
 
-router.get("/add", productController.add_product_get);
+router.get("/add", auth, productController.add_product_get);
 
-router.post("/add", productController.add_product_post);
+router.post("/add", auth, productController.add_product_post);
 
-router.get("/update/:id", productController.update_product_get);
+router.get("/update/:id", auth, productController.update_product_get);
 
-router.post("/update/:id", productController.update_product_post);
+router.post("/update/:id", auth, productController.update_product_post);
 
-router.get("/delete/:id", productController.delete_product);
+router.get("/delete/:id", auth, productController.delete_product);
 
 module.exports = router;
 

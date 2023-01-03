@@ -23,6 +23,11 @@
                                         required />
                                 </div>
 
+                                <div class="center">
+                                    <img id="img_display" src="https://www.meme-arsenal.com/memes/d8b908c80e97d7a695e108830806a835.jpg" alt="" width="100px"
+                                        height="100px" />
+                                </div>
+
                                 <div class="form-outline mb-4">
                                     <label class="form-label" for="image">Image link</label>
                                     <input name="image" type="text" id="image" class="form-control form-control-lg"
@@ -68,6 +73,19 @@
                                     document.getElementById('add-brand-form').submit();
                                 })();
                             }
+
+                            // update image
+                            $(document).ready(function () {
+                                $('#image').on('input', function () {
+                                    const imageLink = $('#image').val();
+                                    if(imageLink == "" || imageLink == null){
+                                        $('#img_display').attr('src', "https://www.meme-arsenal.com/memes/d8b908c80e97d7a695e108830806a835.jpg");
+                                    } else{
+                                        $('#img_display').attr('src', imageLink);
+                                    }
+                                });
+                            });
+
                         </script>
                     </div>
                 </div>

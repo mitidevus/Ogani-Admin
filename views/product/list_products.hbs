@@ -100,29 +100,37 @@
                         <th>Category</th>
                         <th>Brand</th>
                         <th>Star</th>
+                        <th>Status</th>
                         <th>Adjust</th>
                     </tr>
                 </thead>
 
                 <tbody id="list_product">
                     {{#each listProducts.data}}
-                    <tr>
-                        <td>{{this.name}}</td>
-                        <td>{{this.description}}</td>
-                        <td class="text-center">{{this.remain_Amount}}</td>
-                        <td class="text-center">{{this.price}}</td>
-                        <td>
-                            <img src="{{this.image}}" class="thumbnail img-responsive" alt="image" width="100"
-                                height="100" style="border-radius: 10px;" />
-                        </td>
-                        <td class="text-center">{{this.category_name}}</td>
-                        <td class="text-center">{{this.brand_name}}</td>
-                        <td class="text-center">{{this.rate_Star}}</td>
-                        <td>
-                            <div class="center">
-                                <a href="/product/update/{{this.product_Id}}">
-                                    <i class="far fa-edit" title="Update product"></i>
-                                </a>
+                        <tr>
+                            <td>{{this.name}}</td>
+                            <td>{{this.description}}</td>
+                            <td class="text-center">{{this.remain_Amount}}</td>
+                            <td class="text-center">{{this.price}}</td>
+                            <td>
+                                <img
+                                    src="{{this.image}}"
+                                    class="thumbnail img-responsive"
+                                    alt="image"
+                                    width="100"
+                                    height="100"
+                                    style="border-radius: 10px;"
+                                />
+                            </td>
+                            <td class="text-center">{{this.category_name}}</td>
+                            <td class="text-center">{{this.brand_name}}</td>
+                            <td class="text-center">{{this.rate_Star}}</td>
+                            <td class="text-center">{{this.status}}</td>
+                            <td>
+                                <div class="center">
+                                    <a href="/product/update/{{this.product_Id}}">
+                                        <i class="far fa-edit" title="Update product"></i>
+                                    </a>
 
                                 <a href="/product/delete/{{this.product_Id}}"
                                     onclick="return confirm('Do you want to delete this product?')">
@@ -201,7 +209,7 @@
                         <td class="text-center">${v.category_name}</td>
                         <td class="text-center">${v.brand_name}</td>
                         <td class="text-center">${v.rate_Star}</td>
-
+                        <td class="text-center">${v.status}</td>
                         <td>
                             <div class="center">
                                 <a href="/product/update/${v.product_Id}">

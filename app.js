@@ -67,7 +67,9 @@ app.use("/order", orderRouter);
 app.use('/api/product', apiProductRouter);
 app.use('/api/accounts', apiAccountRouter);
 app.use('/api/category', apiCategoryRouter);
-app.use('/api/brand', apiBrandRouter); app.use('/api/order', apiOrderRouter)
+app.use('/api/brand', apiBrandRouter);
+app.use('/api/order', apiOrderRouter)
+
 
 
 

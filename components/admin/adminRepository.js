@@ -6,6 +6,6 @@ exports.getAdminById = async (id) => {
     return data[0] && data[0][0];
 }
 
-exports.updateAdminProfile = async (id, fullname, address, avatar) => {
-    await db.connection.execute('update user set fullname = ?, address = ?, avatar = ? where user_Id = ?', [fullname, address, avatar, id]);
+exports.updateAdminProfile = async (id, fullname, address, phone, avatar) => {
+    await db.connection.execute('update user set fullname = ?, address = ?, phone = ?, avatar = ? where user_Id = ?', [fullname, address, phone, avatar, id]);
 }

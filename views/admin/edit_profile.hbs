@@ -29,9 +29,27 @@
 
                                 <div class="mb-3 form-group">
                                     <span class="ml-2" style="font-weight: 600;">
+                                        Phone number
+                                    </span>
+                                    <input value="{{user.phone}}" name="phone" type="text" class="form-control"
+                                        required />
+                                </div>
+
+                                <div class="mb-3 form-group">
+                                    <span class="ml-2" style="font-weight: 600;">
+                                        Avatar
+                                    </span>
+                                    <div class="center">
+                                        <img id="img_display" src="{{user.avatar}}" alt="user_avatar" style="border: 2px solid #198754;" width="100px"
+                                            height="100px" />
+                                    </div>
+                                </div>
+
+                                <div class="mb-3 form-group">
+                                    <span class="ml-2" style="font-weight: 600;">
                                         Avatar URL
                                     </span>
-                                    <input value="{{user.avatar}}" name="avatar" type="text" class="form-control"
+                                    <input id="image_link" value="{{user.avatar}}" name="avatar" type="text" class="form-control"
                                         required />
                                 </div>
 
@@ -40,8 +58,22 @@
                                         class="btn btn-success w-25 rounded align-items-center mx-auto">Update</button>
                                 </div>
                             </form>
-
                         </div>
+                        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+                        <script>
+                            // update image
+                            $(document).ready(function () {
+                                $('#image_link').on('input', function () {
+                                    const imageLink = $('#image_link').val();
+                                    if(imageLink == "" || imageLink == null){
+                                        $('#img_display').attr('src', "https://www.meme-arsenal.com/memes/d8b908c80e97d7a695e108830806a835.jpg");
+                                    } else{
+                                        $('#img_display').attr('src', imageLink);
+                                    }
+                                });
+                            });
+
+                        </script>
                     </div>
                 </div>
             </div>

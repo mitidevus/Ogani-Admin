@@ -4,6 +4,6 @@ exports.getAdminById = async (id) => {
     return adminRepository.getAdminById(id);
 }
 
-exports.updateAdminProfile = async (id, fullname, address, avatar) => {
-    return adminRepository.updateAdminProfile(id, fullname, address, avatar);
+exports.updateAdminProfile = async (id, fullname, address, phone, avatar) => {
+    return adminRepository.updateAdminProfile(id, fullname, address, phone, avatar);
 }
