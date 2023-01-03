@@ -20,7 +20,7 @@ exports.list_orders = async (req, res) => {
     }
     if (filter) url_sort = "/sort/" + filter;
 
-    let listProducts = [];
+    let listOrders = [];
     if (!nameFilter && !filter) {
         listOrders = await orderService.getAllOrder(currentPage);
     }
@@ -35,6 +35,12 @@ exports.list_orders = async (req, res) => {
         listOrders = await orderService.getSortedOrderByTime_New(currentPage, nameFilter);
     } else if (filter === "time-old") {
         listOrders = await orderService.getSortedOrderByTime_Old(currentPage, nameFilter);
+    } else if (filter === "status-delivering") {
+        listOrders = await orderService.getSortedOrderByStatus_Delivering(currentPage, nameFilter);
+    } else if (filter === "status-delivered") {
+        listOrders = await orderService.getSortedOrderByStatus_Delivered(currentPage, nameFilter);
+    } else if (filter === "status-cancelled") {
+        listOrders = await orderService.getSortedOrderByStatus_Cancelled(currentPage, nameFilter);
     }
 
     const sumPage = listOrders.total_page;
@@ -63,9 +69,50 @@ exports.list_orders = async (req, res) => {
     });
 };
 
+exports.detail_order = async (req, res) => {
+    const id = req.params.id;
+    const order = await orderService.getOrderById(id);
+    const orderDetail = await orderService.getOrderDetailById(id);
+    console.log("order", order)
+    console.log("orderDetail", orderDetail)
+
+    for (let i = 0; i < orderDetail.length; i++) {
+        // Add key total
+        orderDetail[i].total = orderDetail[i].price * orderDetail[i].quantity;
+    }
+
+    // Total of order
+    let totalOrder = 0;
+    for (let i = 0; i < orderDetail.length; i++) {
+        totalOrder += orderDetail[i].price * orderDetail[i].quantity;
+    }
+    for (let i = 0; i < orderDetail.length; i++) {
+        orderDetail[i].price = orderDetail[i].price.toLocaleString("it-IT", {
+            style: "currency",
+            currency: "VND",
+        });
+        orderDetail[i].total = orderDetail[i].total.toLocaleString("it-IT", {
+            style: "currency",
+            currency: "VND",
+        });
+    }
+    totalOrder = totalOrder.toLocaleString("it-IT", {
+        style: "currency",
+        currency: "VND",
+    });
+
+    res.render("order/order_detail", { order, orderDetail, totalOrder });
+};
+
 exports.accept_order = async (req, res) => {
     const id = req.params.id;
     await orderService.acceptOrder(id);
+    res.redirect("/order");
+};
+
+exports.pending_order = async (req, res) => {
+    const id = req.params.id;
+    await orderService.pendingOrder(id);
     res.redirect("/order");
 };
 
