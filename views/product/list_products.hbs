@@ -63,6 +63,7 @@
                         <th>Category</th>
                         <th>Brand</th>
                         <th>Star</th>
+                        <th>Status</th>
                         <th>Adjust</th>
                     </tr>
                 </thead>
@@ -87,6 +88,7 @@
                             <td class="text-center">{{this.category_name}}</td>
                             <td class="text-center">{{this.brand_name}}</td>
                             <td class="text-center">{{this.rate_Star}}</td>
+                            <td class="text-center">{{this.status}}</td>
                             <td>
                                 <div class="center">
                                     <a href="/product/update/{{this.product_Id}}">
@@ -150,7 +152,7 @@
                         <td class="text-center">${v.category_name}</td>
                         <td class="text-center">${v.brand_name}</td>
                         <td class="text-center">${v.rate_Star}</td>
-
+                        <td class="text-center">${v.status}</td>
                         <td>
                             <div class="center">
                                 <a href="/product/update/${v.product_Id}">

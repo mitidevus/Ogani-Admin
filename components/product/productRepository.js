@@ -290,7 +290,7 @@ exports.getSortedProductByRelease_Date_Latest = async () => {
 
 exports.addProduct = async (product) => {
     const result = await db.connection.execute(
-        "insert into product(name, description, remain_Amount, price, image, category_Id, rate_Star, brand_Id, release_Date, hot_product) values(?,?,?,?,?,?,?,?,?,?)",
+        "insert into product(name, description, remain_Amount, price, image, category_Id, rate_Star, brand_Id, release_Date, hot_product, status) values(?,?,?,?,?,?,?,?,?,?,?)",
         [
             product.name,
             product.description,
@@ -302,6 +302,7 @@ exports.addProduct = async (product) => {
             product.brand_Id,
             product.release_Date,
             product.hot_product,
+            product.status,
         ]
     );
     return result[0];
@@ -309,7 +310,7 @@ exports.addProduct = async (product) => {
 
 exports.updateProduct = async (product) => {
     const result = await db.connection.execute(
-        "update product set name = ?, description = ?, remain_Amount = ?, price = ?, image = ?, category_Id = ?, rate_Star = ?, brand_Id = ?, hot_product = ? where product_Id = ?",
+        "update product set name = ?, description = ?, remain_Amount = ?, price = ?, image = ?, category_Id = ?, rate_Star = ?, brand_Id = ?, hot_product = ?, status = ? where product_Id = ?",
         [
             product.name,
             product.description,
@@ -320,6 +321,7 @@ exports.updateProduct = async (product) => {
             product.rate_Star,
             product.brand_Id,
             product.hot_product,
+            product.status,
             product.id,
         ]
     );

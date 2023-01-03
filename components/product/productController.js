@@ -99,7 +99,7 @@ exports.add_product_get = async (req, res) => {
 };
 
 exports.add_product_post = async (req, res) => {
-    const { name, description, quantity, price, image, category_Id, brand_Id } = req.body;
+    const { name, description, quantity, price, image, category_Id, brand_Id, status } = req.body;
     const product = {
         name,
         description,
@@ -111,6 +111,7 @@ exports.add_product_post = async (req, res) => {
         brand_Id: parseInt(brand_Id),
         release_Date: new Date(),
         hot_product: false,
+        status,
     };
     await productService.addProduct(product);
     console.log("Add product\n", product);
@@ -127,7 +128,7 @@ exports.update_product_get = async (req, res) => {
 };
 
 exports.update_product_post = async (req, res) => {
-    const { id, name, description, quantity, price, image, category_Id, brand_Id, hot_product } = req.body;
+    const { id, name, description, quantity, price, image, category_Id, brand_Id, hot_product, status} = req.body;
     const product = {
         id,
         name,
@@ -139,6 +140,7 @@ exports.update_product_post = async (req, res) => {
         rate_Star: 5,
         brand_Id: parseInt(brand_Id),
         hot_product: hot_product === '1' ? true : false,
+        status,
     };
     await productService.updateProduct(product);
     console.log("Update product\n", product);
