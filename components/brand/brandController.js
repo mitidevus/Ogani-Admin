@@ -23,7 +23,7 @@ exports.list_brand = async (req, res) => {
         listBrand = await brandService.getAllBrand(currentPage);
     }
     if (nameFilter) {
-        listBrand = await brandService.filter(nameFilter);
+        listBrand = await brandService.filter(currentPage, nameFilter);
         console.log("listBrand Filter", listBrand);
     }
 

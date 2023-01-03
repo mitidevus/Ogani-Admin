@@ -42,7 +42,7 @@
                             <div class="sort-list">
                                 <span class="sort-item">Filter by Category</span>
                                 <ul class="sort-by">
-                                    <li><a href="" id="default-sort" class="sort-item">
+                                    <li><a href="" class="sort-item">
                                             <span class="fw-bold">Default</span></a></li>
                                     {{#each listCategory}}
                                     <li><a href="" class="sort-item currentCategory" onclick="load_product_page(1, {{this.category_Id}}, 0)">
@@ -58,7 +58,7 @@
                             <div class="sort-list">
                                 <span class="sort-item">Filter by Brand</span>
                                 <ul class="sort-by">
-                                    <li><a href="" id="default-sort" class="sort-item">
+                                    <li><a href="" class="sort-item">
                                             <span class="fw-bold">Default</span></a></li>
                                     {{#each listBrand}}
                                     <li><a href="" class="sort-item currentBrand" onclick="load_product_page(1, 0, {{this.id}})">
@@ -75,10 +75,10 @@
             <div class="col-12 col-md-6 col-xl-4 mb-3">
                 <div class="p-1 bg-light rounded rounded-pill shadow-lg d-flex justify-content-end">
                     <div class="input-group">
-                        <input id="myInput" type="search" onkeyup="mySearchFunction()" placeholder="Search product"
+                        <input id="name_search" type="search" placeholder="Search product"
                             aria-describedby="btn-search" class="form-control border-0 bg-light" />
                         <div class="input-group-append">
-                            <button id="btn-search" class="btn btn-link text-primary"><i
+                            <button id="btn_submit_search" class="btn btn-link text-primary"><i
                                     class="fa fa-search"></i></button>
                         </div>
                     </div>
@@ -183,15 +183,27 @@
     let preSort = '';
     let preMin = 0;
     let preMax = 0;
+
+    let btn_submit_search= document.getElementById("btn_submit_search")
+    let name_search= document.getElementById("name_search")
+
     function load_product_page(page = 1, cate_id = preCateID, brand_id = preBrandID, name = preNameSearch, sort = preSort, min = preMin, max = preMax) {
         console.log(page, cate_id, brand_id, typeof name);
 
         if(cate_id == 0){
             preCateID = 0;
+        } else{
+            name_search.value = '';
+            name_search.focus();
+            name_search.blur();
         }
 
         if(brand_id == 0){
             preBrandID = 0;
+        } else {
+            name_search.value = '';
+            name_search.focus();
+            name_search.blur();
         }
 
         let htmlListProduct = ``
@@ -278,6 +290,17 @@
         });
     }
 
+    //handle form search
+    btn_submit_search.addEventListener("click", ()=>{
+        let name = name_search.value
+        
+        if(name.length == 0){
+            name = ' ';
+        }
+
+        load_product_page(1, 0, 0, name, '', 0, 0)
+    })
+
     //handle sort
     let default_sort = document.getElementById("default-sort")
     let price_asc = document.getElementById("price-asc")
@@ -318,6 +341,7 @@
         activePage()
     }
     renderPage(total_page)
+    
     function activePage() {
         let pages = document.getElementsByClassName("currentPage")
         let prePage = pages[0];

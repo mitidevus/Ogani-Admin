@@ -8,8 +8,8 @@ exports.getAllBrand = async (page = 1) => {
   return brandRepository.getAllBrand(page);
 }
 
-exports.filter = async (page = 1, cate_id = 0, nameFilter, min, max) => {
-  return brandRepository.filter(page, cate_id, nameFilter, min, max)
+exports.filter = async (page = 1,nameFilter) => {
+  return brandRepository.filter(page, nameFilter)
 }
 
 exports.checkBrandExisted = async (name) => {

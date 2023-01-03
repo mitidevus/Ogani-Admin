@@ -10,12 +10,12 @@ exports.getApiBrands = async (req, res) => {
     currentPage = Number(currentPage);
     //kt nếu có số page
 
-    let listCategories;
+    let listBrands;
     if (!nameFilter) {
-        listCategories = await brandService.getAllBrand(currentPage);
-        return res.json(listCategories);
+        listBrands = await brandService.getAllBrand(currentPage);
+        return res.json(listBrands);
     } else {
-        listCategories = await brandService.filter(currentPage, nameFilter);
+        listBrands = await brandService.filter(currentPage, nameFilter);
     }
 
     return res.json(listBrands);

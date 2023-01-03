@@ -23,7 +23,7 @@ exports.list_category = async (req, res) => {
         listCategory = await categoryService.getAllCategory(currentPage);
     }
     if (nameFilter) {
-        listCategory = await categoryService.filter(nameFilter);
+        listCategory = await categoryService.filter(currentPage, nameFilter);
         console.log("listCategory Filter", listCategory);
     }
 

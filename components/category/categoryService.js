@@ -8,8 +8,8 @@ exports.getAllCategory = async (page = 1) => {
   return categoryRepository.getAllCategory(page);
 }
 
-exports.filter = async (page = 1, cate_id = 0, nameFilter, min, max) => {
-  return categoryRepository.filter(page, cate_id, nameFilter, min, max)
+exports.filter = async (page = 1, nameFilter) => {
+  return categoryRepository.filter(page, nameFilter)
 }
 
 exports.checkCategoryExisted = async (name) => {

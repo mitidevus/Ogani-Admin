@@ -12,12 +12,10 @@
             <div class="col-12 col-md-6 col-xl-4 mb-3">
                 <div class="p-1 bg-light rounded rounded-pill shadow-lg d-flex justify-content-end">
                     <div class="input-group">
-                        <input id="myInput" type="search" placeholder="Search brand" aria-describedby="btn-search"
-                            class="form-control border-0 bg-light" />
+                        <input id="name_search" type="search" placeholder="Search category"
+                            aria-describedby="btn-search" class="form-control border-0 bg-light" />
                         <div class="input-group-append">
-                            {{!-- <button id="btn-search" class="btn btn-link text-primary"><i
-                                    class="fa fa-search"></i></button> --}}
-                            <button onclick="findBrandByName()" id="btn-search" class="btn btn-link text-primary"><i
+                            <button id="btn_submit_search" class="btn btn-link text-primary"><i
                                     class="fa fa-search"></i></button>
                         </div>
                     </div>
@@ -103,15 +101,18 @@
     let list_brand = document.getElementById("list_brand");
     let myInput = document.getElementById("myInput")
 
-    function findBrandByName() {
-        let nameSearch = myInput.value
+    let btn_submit_search= document.getElementById("btn_submit_search")
+    let name_search= document.getElementById("name_search")
 
-        if (!nameSearch) {
-            console.log("Search for: ", nameSearch)
-            preNameSearch = nameSearch
+    btn_submit_search.addEventListener("click", ()=>{
+        let name = name_search.value
+        
+        if(name.length == 0){
+            name = ' ';
         }
-        load_brand_page(1, nameSearch)
-    }
+
+        load_brand_page(1, name)
+    })
 
     //let preCateID=0;
     let preNameSearch = '';
@@ -157,7 +158,7 @@
 
                 if (name) {
                     if (name !== preNameSearch) {
-                        renderPage(categories.total_page, name)
+                        renderPage(brands.total_page, name)
                     }
                     preNameSearch = name;
                 }
@@ -223,9 +224,10 @@
     function renderPage(total_page = 1, name) {
         console.log('renderPage called');
         let pagingHtml = ``
+        console.log("total page",Number(total_page))
         for (let i = 1; i <= Number(total_page); i++) {
             pagingHtml += `
-            <a class="currentPage" onclick="load_brand_page(${i},${name})">${i}</a>
+            <a class="currentPage" onclick="load_brand_page(${i},'${name || ''}')">${i}</a>
             `
         }
         pageComponent.innerHTML = pagingHtml
@@ -247,19 +249,5 @@
             })
         }
     }
-    activePage()
 
-    /*
-    let categories= document.getElementsByClassName("currentBrand")
-    let preCate= categories[0];
-    {{!-- preCate.classList.add("is_active") --}}
-    for (let cate of categories){
-        cate.addEventListener('click', (e)=>{
-            e.preventDefault()
-            e.target.classList.add("is_active")
-            preCate.classList.remove("is_active")
-            preCate= cate
-        })
-    }
-    */
 </script>
