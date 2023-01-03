@@ -50,6 +50,7 @@ exports.list_product = async (req, res) => {
     }
 
     let listCategory = await productService.getAllCategory();
+    let listBrand = await productService.getAllBrand();
 
     let latestProduct = await productService.getSortedProductByRelease_Date_Latest();
     latestProduct = latestProduct.slice(0, 5);
@@ -81,6 +82,7 @@ exports.list_product = async (req, res) => {
         url_filter,
         listProducts,
         listCategory,
+        listBrand,
         listLeftPage,
         listcurrentPage,
         listRightPage,

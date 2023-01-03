@@ -50,6 +50,27 @@ exports.getProductByCategory = async (page, cate_Id) => {
     return result;
 };
 
+exports.getProductByBrand = async (page, brand_Id) => {
+    // const result = await db.connection.execute('select * from Product');
+    // return result[0];
+
+    let count = await db.connection.execute(`select count(*) from Product where brand_Id = ?`, [brand_Id]);
+    const data = await db.connection.execute(
+        `select * from Product where brand_Id = ? limit ${ITEM_PER_PAGE_PRODUCT} offset ${(Number(page) - 1) * ITEM_PER_PAGE_PRODUCT
+        }`,
+        [brand_Id]
+    );
+    count = count[0][0]["count(*)"];
+    const result = {
+        data: data[0],
+        page: page,
+        total_page: Math.ceil(count / +ITEM_PER_PAGE_PRODUCT),
+        item_per_page: ITEM_PER_PAGE_PRODUCT,
+    };
+
+    return result;
+};
+
 exports.getAllCategory = async () => {
     const result = await db.connection.execute("select * from category");
     return result[0];
@@ -60,7 +81,7 @@ exports.getAllBrand = async () => {
     return result[0];
 };
 
-exports.getSortedProductByPrice_ASC = async (page, cate_Id, nameFilter, min, max) => {
+exports.getSortedProductByPrice_ASC = async (page, cate_Id, brand_Id, nameFilter, min, max) => {
     //let count = this.countAllProducts();
     //const result = await db.connection.execute('select * from Product order by price where category_Id=?',[cate_Id]);
     let sqlCount = "select count(*) from Product";
@@ -69,21 +90,22 @@ exports.getSortedProductByPrice_ASC = async (page, cate_Id, nameFilter, min, max
     let count;
     console.log("name repo: ", nameFilter);
     console.log("cate repo: ", cate_Id);
+    console.log("brand repo: ", brand_Id);
     console.log(
         "SQL: ",
-        `${sqlData} ${nameFilter || cate_Id || min ? " and " : ""} ${nameFilter ? " name LIKE '%" + nameFilter + "%' " : ""
-        } ${cate_Id ? (nameFilter ? "and" : "") + " product.category_Id=" + cate_Id : ""} ${min ? (nameFilter || cate_Id ? " and " : "") + "price between " + min + " and " + max : ""
-        } order by price  limit ${ITEM_PER_PAGE_PRODUCT} offset ${(Number(page) - 1) * ITEM_PER_PAGE_PRODUCT}`
+        `${sqlData} ${nameFilter || cate_Id || brand_Id || min ? " and " : ""} ${nameFilter ? " name LIKE '%" + nameFilter + "%' " : ""
+        } ${cate_Id ? (nameFilter ? "and" : "") + " product.category_Id=" + cate_Id : ""} ${brand_Id ? (nameFilter ? "and" : "") + " product.brand_Id=" + brand_Id : ""} ${min ? (nameFilter || cate_Id || brand_Id ? " and " : "") + "price between " + min + " and " + max : ""
+        } order by price limit ${ITEM_PER_PAGE_PRODUCT} offset ${(Number(page) - 1) * ITEM_PER_PAGE_PRODUCT}`
     );
     count = await db.connection.execute(
-        `${sqlCount} ${nameFilter || cate_Id || min ? " where " : ""} ${nameFilter ? " name LIKE '%" + nameFilter + "%' " : ""
-        } ${cate_Id ? (nameFilter ? "and" : "") + " product.category_Id=" + cate_Id : ""} ${min ? (nameFilter || cate_Id ? " and " : "") + "price between " + min + " and " + max : ""
+        `${sqlCount} ${nameFilter || cate_Id || brand_Id || min ? " where " : ""} ${nameFilter ? " name LIKE '%" + nameFilter + "%' " : ""
+        } ${cate_Id ? (nameFilter ? "and" : "") + " product.category_Id=" + cate_Id : ""} ${brand_Id ? (nameFilter ? "and" : "") + " product.brand_Id=" + brand_Id : ""} ${min ? (nameFilter || cate_Id || brand_Id ? " and " : "") + "price between " + min + " and " + max : ""
         } `
     );
     data = await db.connection.execute(
-        `${sqlData} ${nameFilter || cate_Id || min ? " and " : ""} ${nameFilter ? " name LIKE '%" + nameFilter + "%' " : ""
-        } ${cate_Id ? (nameFilter ? "and" : "") + " product.category_Id=" + cate_Id : ""} ${min ? (nameFilter || cate_Id ? " and " : "") + "price between " + min + " and " + max : ""
-        } order by price  limit ${ITEM_PER_PAGE_PRODUCT} offset ${(Number(page) - 1) * ITEM_PER_PAGE_PRODUCT}`
+        `${sqlData} ${nameFilter || cate_Id || brand_Id || min ? " and " : ""} ${nameFilter ? " name LIKE '%" + nameFilter + "%' " : ""
+        } ${cate_Id ? (nameFilter ? "and" : "") + " product.category_Id=" + cate_Id : ""} ${brand_Id ? (nameFilter ? "and" : "") + " product.brand_Id=" + brand_Id : ""} ${min ? (nameFilter || cate_Id || brand_Id ? " and " : "") + "price between " + min + " and " + max : ""
+        } order by price limit ${ITEM_PER_PAGE_PRODUCT} offset ${(Number(page) - 1) * ITEM_PER_PAGE_PRODUCT}`
     );
     count = count[0][0]["count(*)"];
     const result = {
@@ -98,7 +120,7 @@ exports.getSortedProductByPrice_ASC = async (page, cate_Id, nameFilter, min, max
     //return result[0];
 };
 
-exports.getSortedProductByPrice_DESC = async (page, cate_Id, nameFilter, min, max) => {
+exports.getSortedProductByPrice_DESC = async (page, cate_Id, brand_Id, nameFilter, min, max) => {
     //let count = this.countAllProducts();
     //const result = await db.connection.execute('select * from Product order by price where category_Id=?',[cate_Id]);
     let sqlCount = "select count(*) from Product";
@@ -107,20 +129,21 @@ exports.getSortedProductByPrice_DESC = async (page, cate_Id, nameFilter, min, ma
     let count;
     console.log("name repo: ", nameFilter);
     console.log("cate repo: ", cate_Id);
+    console.log("brand repo: ", brand_Id);
     console.log(
         "SQL: ",
-        `${sqlData} ${nameFilter || cate_Id || min ? " and " : ""} ${nameFilter ? " name LIKE '%" + nameFilter + "%' " : ""
-        } ${cate_Id ? (nameFilter ? "and" : "") + " product.category_Id=" + cate_Id : ""} ${min ? (nameFilter || cate_Id ? " and " : "") + "price between " + min + " and " + max : ""
+        `${sqlData} ${nameFilter || cate_Id || brand_Id || min ? " and " : ""} ${nameFilter ? " name LIKE '%" + nameFilter + "%' " : ""
+        } ${cate_Id ? (nameFilter ? "and" : "") + " product.category_Id=" + cate_Id : ""} ${brand_Id ? (nameFilter ? "and" : "") + " product.brand_Id=" + brand_Id : ""} ${min ? (nameFilter || cate_Id || brand_Id ? " and " : "") + "price between " + min + " and " + max : ""
         } order by price desc limit ${ITEM_PER_PAGE_PRODUCT} offset ${(Number(page) - 1) * ITEM_PER_PAGE_PRODUCT}`
     );
     count = await db.connection.execute(
-        `${sqlCount} ${nameFilter || cate_Id || min ? " where " : ""} ${nameFilter ? " name LIKE '%" + nameFilter + "%' " : ""
-        } ${cate_Id ? (nameFilter ? "and" : "") + " product.category_Id=" + cate_Id : ""} ${min ? (nameFilter || cate_Id ? " and " : "") + "price between " + min + " and " + max : ""
-        }`
+        `${sqlCount} ${nameFilter || cate_Id || brand_Id || min ? " where " : ""} ${nameFilter ? " name LIKE '%" + nameFilter + "%' " : ""
+        } ${cate_Id ? (nameFilter ? "and" : "") + " product.category_Id=" + cate_Id : ""} ${brand_Id ? (nameFilter ? "and" : "") + " product.brand_Id=" + brand_Id : ""} ${min ? (nameFilter || cate_Id || brand_Id ? " and " : "") + "price between " + min + " and " + max : ""
+        } `
     );
     data = await db.connection.execute(
-        `${sqlData} ${nameFilter || cate_Id || min ? " and " : ""} ${nameFilter ? " name LIKE '%" + nameFilter + "%' " : ""
-        } ${cate_Id ? (nameFilter ? "and" : "") + " product.category_Id=" + cate_Id : ""} ${min ? (nameFilter || cate_Id ? " and " : "") + "price between " + min + " and " + max : ""
+        `${sqlData} ${nameFilter || cate_Id || brand_Id || min ? " and " : ""} ${nameFilter ? " name LIKE '%" + nameFilter + "%' " : ""
+        } ${cate_Id ? (nameFilter ? "and" : "") + " product.category_Id=" + cate_Id : ""} ${brand_Id ? (nameFilter ? "and" : "") + " product.brand_Id=" + brand_Id : ""} ${min ? (nameFilter || cate_Id || brand_Id ? " and " : "") + "price between " + min + " and " + max : ""
         } order by price desc limit ${ITEM_PER_PAGE_PRODUCT} offset ${(Number(page) - 1) * ITEM_PER_PAGE_PRODUCT}`
     );
     count = count[0][0]["count(*)"];
@@ -134,7 +157,7 @@ exports.getSortedProductByPrice_DESC = async (page, cate_Id, nameFilter, min, ma
     return result;
 };
 
-exports.getSortedProductByRate_Star_ASC = async (page, cate_Id, nameFilter, min, max) => {
+exports.getSortedProductByRate_Star_ASC = async (page, cate_Id, brand_Id, nameFilter, min, max) => {
     //let count = this.countAllProducts();
     //const result = await db.connection.execute('select * from Product order by price where category_Id=?',[cate_Id]);
     let sqlCount = "select count(*) from Product";
@@ -143,21 +166,22 @@ exports.getSortedProductByRate_Star_ASC = async (page, cate_Id, nameFilter, min,
     let count;
     console.log("name repo: ", nameFilter);
     console.log("cate repo: ", cate_Id);
+    console.log("brand repo: ", brand_Id);
     console.log(
         "SQL: ",
-        `${sqlData} ${nameFilter || cate_Id || min ? " and " : ""} ${nameFilter ? " name LIKE '%" + nameFilter + "%' " : ""
-        } ${cate_Id ? (nameFilter ? " and " : "") + " product.category_Id=" + cate_Id : ""}  ${min ? (nameFilter || cate_Id ? " and " : "") + "price between " + min + " and " + max : ""
-        } order by rate_star  limit ${ITEM_PER_PAGE_PRODUCT} offset ${(Number(page) - 1) * ITEM_PER_PAGE_PRODUCT}`
+        `${sqlData} ${nameFilter || cate_Id || brand_Id || min ? " and " : ""} ${nameFilter ? " name LIKE '%" + nameFilter + "%' " : ""
+        } ${cate_Id ? (nameFilter ? "and" : "") + " product.category_Id=" + cate_Id : ""} ${brand_Id ? (nameFilter ? "and" : "") + " product.brand_Id=" + brand_Id : ""} ${min ? (nameFilter || cate_Id || brand_Id ? " and " : "") + "price between " + min + " and " + max : ""
+        } order by rate_star limit ${ITEM_PER_PAGE_PRODUCT} offset ${(Number(page) - 1) * ITEM_PER_PAGE_PRODUCT}`
     );
     count = await db.connection.execute(
-        `${sqlCount} ${nameFilter || cate_Id || min ? " where " : ""} ${nameFilter ? " name LIKE '%" + nameFilter + "%' " : ""
-        } ${cate_Id ? (nameFilter ? " and " : "") + " product.category_Id=" + cate_Id : ""}  ${min ? (nameFilter || cate_Id ? " and " : "") + "price between " + min + " and " + max : ""
-        }`
+        `${sqlCount} ${nameFilter || cate_Id || brand_Id || min ? " where " : ""} ${nameFilter ? " name LIKE '%" + nameFilter + "%' " : ""
+        } ${cate_Id ? (nameFilter ? "and" : "") + " product.category_Id=" + cate_Id : ""} ${brand_Id ? (nameFilter ? "and" : "") + " product.brand_Id=" + brand_Id : ""} ${min ? (nameFilter || cate_Id || brand_Id ? " and " : "") + "price between " + min + " and " + max : ""
+        } `
     );
     data = await db.connection.execute(
-        `${sqlData} ${nameFilter || cate_Id || min ? " and " : ""} ${nameFilter ? " name LIKE '%" + nameFilter + "%' " : ""
-        } ${cate_Id ? (nameFilter ? " and " : "") + " product.category_Id=" + cate_Id : ""} ${min ? (nameFilter || cate_Id ? " and " : "") + "price between " + min + " and " + max : ""
-        }  order by rate_star  limit ${ITEM_PER_PAGE_PRODUCT} offset ${(Number(page) - 1) * ITEM_PER_PAGE_PRODUCT}`
+        `${sqlData} ${nameFilter || cate_Id || brand_Id || min ? " and " : ""} ${nameFilter ? " name LIKE '%" + nameFilter + "%' " : ""
+        } ${cate_Id ? (nameFilter ? "and" : "") + " product.category_Id=" + cate_Id : ""} ${brand_Id ? (nameFilter ? "and" : "") + " product.brand_Id=" + brand_Id : ""} ${min ? (nameFilter || cate_Id || brand_Id ? " and " : "") + "price between " + min + " and " + max : ""
+        } order by rate_star limit ${ITEM_PER_PAGE_PRODUCT} offset ${(Number(page) - 1) * ITEM_PER_PAGE_PRODUCT}`
     );
     count = count[0][0]["count(*)"];
     const result = {
@@ -170,7 +194,7 @@ exports.getSortedProductByRate_Star_ASC = async (page, cate_Id, nameFilter, min,
     return result;
 };
 
-exports.getSortedProductByRate_Star_DESC = async (page, cate_Id, nameFilter, min, max) => {
+exports.getSortedProductByRate_Star_DESC = async (page, cate_Id, brand_Id, nameFilter, min, max) => {
     // const result = await db.connection.execute('select * from Product order by rate_star DESC');
     // return result[0];
 
@@ -180,20 +204,21 @@ exports.getSortedProductByRate_Star_DESC = async (page, cate_Id, nameFilter, min
     let count;
     console.log("name repo: ", nameFilter);
     console.log("cate repo: ", cate_Id);
+    console.log("brand repo: ", brand_Id);
     console.log(
         "SQL: ",
-        `${sqlData} ${nameFilter || cate_Id || min ? " and " : ""} ${nameFilter ? " name LIKE '%" + nameFilter + "%' " : ""
-        } ${cate_Id ? (nameFilter ? " and " : "") + " product.category_Id=" + cate_Id : ""} ${min ? (nameFilter || cate_Id ? " and " : "") + "price between " + min + " and " + max : ""
-        } order by rate_star desc  limit ${ITEM_PER_PAGE_PRODUCT} offset ${(Number(page) - 1) * ITEM_PER_PAGE_PRODUCT}`
+        `${sqlData} ${nameFilter || cate_Id || brand_Id || min ? " and " : ""} ${nameFilter ? " name LIKE '%" + nameFilter + "%' " : ""
+        } ${cate_Id ? (nameFilter ? "and" : "") + " product.category_Id=" + cate_Id : ""} ${brand_Id ? (nameFilter ? "and" : "") + " product.brand_Id=" + brand_Id : ""} ${min ? (nameFilter || cate_Id || brand_Id ? " and " : "") + "price between " + min + " and " + max : ""
+        } order by rate_star desc limit ${ITEM_PER_PAGE_PRODUCT} offset ${(Number(page) - 1) * ITEM_PER_PAGE_PRODUCT}`
     );
     count = await db.connection.execute(
-        `${sqlCount} ${nameFilter || cate_Id || min ? " where " : ""} ${nameFilter ? " name LIKE '%" + nameFilter + "%' " : ""
-        } ${cate_Id ? (nameFilter ? " and " : "") + " product.category_Id=" + cate_Id : ""} ${min ? (nameFilter || cate_Id ? " and " : "") + "price between " + min + " and " + max : ""
-        }`
+        `${sqlCount} ${nameFilter || cate_Id || brand_Id || min ? " where " : ""} ${nameFilter ? " name LIKE '%" + nameFilter + "%' " : ""
+        } ${cate_Id ? (nameFilter ? "and" : "") + " product.category_Id=" + cate_Id : ""} ${brand_Id ? (nameFilter ? "and" : "") + " product.brand_Id=" + brand_Id : ""} ${min ? (nameFilter || cate_Id || brand_Id ? " and " : "") + "price between " + min + " and " + max : ""
+        } `
     );
     data = await db.connection.execute(
-        `${sqlData} ${nameFilter || cate_Id || min ? " and " : ""} ${nameFilter ? " name LIKE '%" + nameFilter + "%' " : ""
-        } ${cate_Id ? (nameFilter ? " and " : "") + " product.category_Id=" + cate_Id : ""} ${min ? (nameFilter || cate_Id ? " and " : "") + "price between " + min + " and " + max : ""
+        `${sqlData} ${nameFilter || cate_Id || brand_Id || min ? " and " : ""} ${nameFilter ? " name LIKE '%" + nameFilter + "%' " : ""
+        } ${cate_Id ? (nameFilter ? "and" : "") + " product.category_Id=" + cate_Id : ""} ${brand_Id ? (nameFilter ? "and" : "") + " product.brand_Id=" + brand_Id : ""} ${min ? (nameFilter || cate_Id || brand_Id ? " and " : "") + "price between " + min + " and " + max : ""
         } order by rate_star desc limit ${ITEM_PER_PAGE_PRODUCT} offset ${(Number(page) - 1) * ITEM_PER_PAGE_PRODUCT}`
     );
     count = count[0][0]["count(*)"];
@@ -212,34 +237,35 @@ exports.getSortedProductByRate_Star_DESC = async (page, cate_Id, nameFilter, min
 //     return result[0];
 // }
 
-exports.filter = async (page = 1, cate_Id = 0, nameFilter, min, max) => {
+exports.filter = async (page = 1, cate_Id = 0, brand_Id = 0, nameFilter, min, max) => {
     let sqlCount = "select count(*) from Product";
     let sqlData = "select product.*, category.name as category_name, brand.name as brand_name from product, category, brand where product.category_Id = category.category_Id and product.brand_Id = brand.id ";
     let data;
     let count;
     console.log("name repo: ", nameFilter);
     console.log("cate repo: ", cate_Id);
+    console.log("brand repo: ", brand_Id);
     console.log(
         "SQL filter method: ",
-        `${sqlData} ${nameFilter || cate_Id || min ? " and " : ""} ${nameFilter ? " name LIKE '%" + nameFilter + "%' " : ""
-        } ${cate_Id ? (nameFilter ? "and" : "") + " product.category_Id=" + cate_Id : ""} ${min ? (nameFilter || cate_Id ? " and " : "") + "price between " + min + " and " + max : ""
+        `${sqlData} ${nameFilter || cate_Id || brand_Id || min ? " and " : ""} ${nameFilter ? " name LIKE '%" + nameFilter + "%' " : ""
+        } ${cate_Id ? (nameFilter ? "and" : "") + " product.category_Id=" + cate_Id : ""} ${brand_Id ? (nameFilter ? "and" : "") + " product.brand_Id=" + brand_Id : ""} ${min ? (nameFilter || cate_Id || brand_Id ? " and " : "") + "price between " + min + " and " + max : ""
         }  limit ${ITEM_PER_PAGE_PRODUCT} offset ${(Number(page) - 1) * ITEM_PER_PAGE_PRODUCT}`
     );
     console.log(
         "SQL count method: ",
-        `${sqlCount} ${nameFilter || cate_Id || min ? " where " : ""} ${nameFilter ? " name LIKE '%" + nameFilter + "%' " : ""
-        } ${cate_Id ? (nameFilter ? "and" : "") + " product.category_Id=" + cate_Id : ""} ${min ? (nameFilter || cate_Id ? " and " : "") + "price between " + min + " and " + max : ""
+        `${sqlCount} ${nameFilter || cate_Id || brand_Id || min ? " where " : ""} ${nameFilter ? " name LIKE '%" + nameFilter + "%' " : ""
+        } ${cate_Id ? (nameFilter ? "and" : "") + " product.category_Id=" + cate_Id : ""} ${brand_Id ? (nameFilter ? "and" : "") + " product.brand_Id=" + brand_Id : ""} ${min ? (nameFilter || cate_Id || brand_Id ? " and " : "") + "price between " + min + " and " + max : ""
         } `
     )
     count = await db.connection.execute(
-        `${sqlCount} ${nameFilter || cate_Id || min ? " where " : ""} ${nameFilter ? " name LIKE '%" + nameFilter + "%' " : ""
-        } ${cate_Id ? (nameFilter ? "and" : "") + " product.category_Id=" + cate_Id : ""} ${min ? (nameFilter || cate_Id ? " and " : "") + "price between " + min + " and " + max : ""
+        `${sqlCount} ${nameFilter || cate_Id || brand_Id || min ? " where " : ""} ${nameFilter ? " name LIKE '%" + nameFilter + "%' " : ""
+        } ${cate_Id ? (nameFilter ? "and" : "") + " product.category_Id=" + cate_Id : ""} ${brand_Id ? (nameFilter ? "and" : "") + " product.brand_Id=" + brand_Id : ""} ${min ? (nameFilter || cate_Id || brand_Id ? " and " : "") + "price between " + min + " and " + max : ""
         } `
     );
     data = await db.connection.execute(
-        `${sqlData} ${nameFilter || cate_Id || min ? " and " : ""} ${nameFilter ? " name LIKE '%" + nameFilter + "%' " : ""
-        } ${cate_Id ? (nameFilter ? "and" : "") + " product.category_Id=" + cate_Id : ""} ${min ? (nameFilter || cate_Id ? " and " : "") + "price between " + min + " and " + max : ""
-        } limit ${ITEM_PER_PAGE_PRODUCT} offset ${(Number(page) - 1) * ITEM_PER_PAGE_PRODUCT}`
+        `${sqlData} ${nameFilter || cate_Id || brand_Id || min ? " and " : ""} ${nameFilter ? " name LIKE '%" + nameFilter + "%' " : ""
+        } ${cate_Id ? (nameFilter ? "and" : "") + " product.category_Id=" + cate_Id : ""} ${brand_Id ? (nameFilter ? "and" : "") + " product.brand_Id=" + brand_Id : ""} ${min ? (nameFilter || cate_Id || brand_Id ? " and " : "") + "price between " + min + " and " + max : ""
+        }  limit ${ITEM_PER_PAGE_PRODUCT} offset ${(Number(page) - 1) * ITEM_PER_PAGE_PRODUCT}`
     );
     count = count[0][0]["count(*)"];
     const result = {

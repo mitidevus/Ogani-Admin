@@ -45,7 +45,23 @@
                                     <li><a href="" id="default-sort" class="sort-item">
                                             <span class="fw-bold">Default</span></a></li>
                                     {{#each listCategory}}
-                                    <li><a href="" class="sort-item currentCategory" onclick="load_product_page(1, {{this.category_Id}})">
+                                    <li><a href="" class="sort-item currentCategory" onclick="load_product_page(1, {{this.category_Id}}, 0)">
+                                            <span class="fw-bold">{{this.name}}</span></a></li>
+                                    {{/each}}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="filter__sort ms-3">
+                            <div class="sort-list">
+                                <span class="sort-item">Filter by Brand</span>
+                                <ul class="sort-by">
+                                    <li><a href="" id="default-sort" class="sort-item">
+                                            <span class="fw-bold">Default</span></a></li>
+                                    {{#each listBrand}}
+                                    <li><a href="" class="sort-item currentBrand" onclick="load_product_page(1, 0, {{this.id}})">
                                             <span class="fw-bold">{{this.name}}</span></a></li>
                                     {{/each}}
                                 </ul>
@@ -162,15 +178,24 @@
 
     let list_product = document.getElementById("list_product")
     let preCateID = 0;
+    let preBrandID = 0;
     let preNameSearch = '';
     let preSort = '';
     let preMin = 0;
     let preMax = 0;
-    function load_product_page(page = 1, cate_id = preCateID, name = preNameSearch, sort = preSort, min = preMin, max = preMax) {
-        console.log(page, cate_id, typeof name)
+    function load_product_page(page = 1, cate_id = preCateID, brand_id = preBrandID, name = preNameSearch, sort = preSort, min = preMin, max = preMax) {
+        console.log(page, cate_id, brand_id, typeof name);
+
+        if(cate_id == 0){
+            preCateID = 0;
+        }
+
+        if(brand_id == 0){
+            preBrandID = 0;
+        }
 
         let htmlListProduct = ``
-        $.getJSON(`/api/product?page=${page}&cate_id=${cate_id || ''}&name=${name || ''}&sort=${sort || ''}&min=${min || ''}&max=${max || ''}`, function (products) {
+        $.getJSON(`/api/product?page=${page}&cate_id=${cate_id || ''}&brand_id=${brand_id || ''}&name=${name || ''}&sort=${sort || ''}&min=${min || ''}&max=${max || ''}`, function (products) {
             const data = products.data.map(v => {
                 v.price = v.price.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
                 return `
@@ -214,62 +239,44 @@
             list_product.innerHTML = htmlListProduct
             if (cate_id) {
                 if (preCateID !== cate_id) {
-                    renderPage(products.total_page, cate_id, name, sort)
+                    renderPage(products.total_page, cate_id, brand_id, name, sort)
                     preCateID = cate_id;
+                }
+
+            }
+            if (brand_id) {
+                if (preBrandID !== brand_id) {
+                    renderPage(products.total_page, cate_id, brand_id, name, sort)
+                    preBrandID = brand_id;
                 }
 
             }
             if (name) {
                 if (name !== preNameSearch) {
-                    renderPage(products.total_page, cate_id, name, sort)
+                    renderPage(products.total_page, cate_id, brand_id, name, sort)
                 }
                 preNameSearch = name;
 
             }
             if (sort) {
                 if (sort !== preSort) {
-                    renderPage(products.total_page, cate_id, name, sort)
+                    renderPage(products.total_page, cate_id, brand_id, name, sort)
                     preSort = sort;
                 }
 
             }
             if (min) {
                 if (max != preMax) {
-                    renderPage(products.total_page, cate_id, name, sort, min, max)
+                    renderPage(products.total_page, cate_id, brand_id, name, sort, min, max)
                     preMax = max;
                 }
                 if (min != preMin) {
-                    renderPage(products.total_page, cate_id, name, sort, min, max)
+                    renderPage(products.total_page, cate_id, brand_id, name, sort, min, max)
                     preMin = min;
                 }
             }
         });
     }
-
-    /*
-    //handle form search
-    let btn_submit_search= document.getElementById("btn_submit_search")
-    let name_search= document.getElementById("name_search")
-    btn_submit_search.addEventListener("click", ()=>{
-        let name= name_search.value
-        
-        load_product_page(1, preCateID, name, preSort, preMin, preMax)
-    })
-    
-    //handle price 
-    let btn_search_slider = document.getElementById("btn-search-slider-price")
-    let minamount= document.getElementById("minamounth")
-    let maxamount= document.getElementById("maxamounth")
-    btn_search_slider.addEventListener("click", ()=>{
-        let min = minamount.value || 0
-        let max = maxamount.value || 0
-        if (max>min){
-            load_product_page(1, preCateID, preNameSearch, preSort, min, max)
-        }else {
-            alert("Invalid price")
-        }                        
-    })
-    */
 
     //handle sort
     let default_sort = document.getElementById("default-sort")
@@ -280,31 +287,31 @@
 
     default_sort.addEventListener('click', (e) => {
         e.preventDefault()
-        load_product_page(1, preCateID, preNameSearch, 'default', preMin, preMax)
+        load_product_page(1, preCateID, preBrandID, preNameSearch, 'default', preMin, preMax)
     })
     price_asc.addEventListener('click', (e) => {
         e.preventDefault()
-        load_product_page(1, preCateID, preNameSearch, 'price-asc', preMin, preMax)
+        load_product_page(1, preCateID, preBrandID, preNameSearch, 'price-asc', preMin, preMax)
     })
     price_desc.addEventListener('click', (e) => {
         e.preventDefault()
-        load_product_page(1, preCateID, preNameSearch, 'price-desc', preMin, preMax)
+        load_product_page(1, preCateID, preBrandID, preNameSearch, 'price-desc', preMin, preMax)
     })
     star_asc.addEventListener('click', (e) => {
         e.preventDefault()
-        load_product_page(1, preCateID, preNameSearch, 'rate-star-asc', preMin, preMax)
+        load_product_page(1, preCateID, preBrandID, preNameSearch, 'rate-star-asc', preMin, preMax)
     })
     star_desc.addEventListener('click', (e) => {
         e.preventDefault()
-        load_product_page(1, preCateID, preNameSearch, 'rate-star-desc', preMin, preMax)
+        load_product_page(1, preCateID, preBrandID, preNameSearch, 'rate-star-desc', preMin, preMax)
     })
 
-    function renderPage(total_page = 1, cate_id = 0, name, sort, min, max) {
+    function renderPage(total_page = 1, cate_id = 0, brand_id = 0, name, sort, min, max) {
         let pagingHtml = ``
         for (let i = 1; i <= Number(total_page); i++) {
             pagingHtml += `
                 <a href=""
-            class="currentPage" onclick="load_product_page(${i}, ${cate_id}, '${name || ''}', '${sort || ''}', ${min}, ${max})">${i}</a>
+            class="currentPage" onclick="load_product_page(${i}, ${cate_id}, ${brand_id}, '${name || ''}', '${sort || ''}', ${min}, ${max})">${i}</a>
             `
         }
         pageComponent.innerHTML = pagingHtml
@@ -325,7 +332,6 @@
         }
     }
     
-    
     let categories= document.getElementsByClassName("currentCategory")
     let preCate;
     //preCate.classList.add("is_active")
@@ -335,6 +341,18 @@
             {{!-- e.target.classList.add("is_active")
             preCate.classList.remove("is_active") --}}
             preCate= cate
+        })
+    }
+
+    let brands= document.getElementsByClassName("currentBrand")
+    let preBrand;
+    //preBrand.classList.add("is_active")
+    for (let brand of brands){
+        brand.addEventListener('click', (e)=>{
+            e.preventDefault()
+            {{!-- e.target.classList.add("is_active")
+            preBrand.classList.remove("is_active") --}}
+            preBrand= brand
         })
     }
     
