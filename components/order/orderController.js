@@ -32,9 +32,9 @@ exports.list_orders = async (req, res) => {
     if (filter === "default") {
         listOrders = await orderService.getAllOrder(currentPage);
     } else if (filter === "time-new") {
-        listOrders = await orderService.getAllOrderAccepted(currentPage);
+        listOrders = await orderService.getSortedOrderByTime_New(currentPage, nameFilter);
     } else if (filter === "time-old") {
-        listOrders = await orderService.getAllOrderCancelled(currentPage);
+        listOrders = await orderService.getSortedOrderByTime_Old(currentPage, nameFilter);
     }
 
     const sumPage = listOrders.total_page;
@@ -52,8 +52,6 @@ exports.list_orders = async (req, res) => {
         }
     }
 
-    console.log("currentPage", currentPage);
-
     res.render("order/list_order", {
         url_sort,
         url_filter,
@@ -65,22 +63,14 @@ exports.list_orders = async (req, res) => {
     });
 };
 
-// exports.list_orders = async (req, res) => {
-//     res.render("order/list_order");
-// };
-
 exports.accept_order = async (req, res) => {
     const id = req.params.id;
-    const order = await orderService.getOrderById(id);
-    order.status = "Accepted";
-    await orderService.updateOrder(order);
+    await orderService.acceptOrder(id);
     res.redirect("/order");
 };
 
 exports.cancel_order = async (req, res) => {
     const id = req.params.id;
-    const order = await orderService.getOrderById(id);
-    order.status = "Cancelled";
-    await orderService.updateOrder(order);
+    await orderService.cancelOrder(id);
     res.redirect("/order");
-};
+}

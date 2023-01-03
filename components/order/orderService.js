@@ -39,3 +39,11 @@ exports.getSortedOrderByTime_Old = async (page=1, nameFilter) => {
 exports.filter = async (page=1, nameFilter) => {
     return orderRepository.filter(page, nameFilter);
 }
+
+exports.acceptOrder = async (id) => {
+    return orderRepository.acceptOrder(id);
+}
+
+exports.cancelOrder = async (id) => {
+    return orderRepository.cancelOrder(id);
+}

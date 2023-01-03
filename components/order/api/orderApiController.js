@@ -24,7 +24,5 @@ exports.getApiOrders = async (req, res) => {
         listOrders = await orderService.filter(currentPage, nameFilter);
     }
 
-    console.log(listOrders)
-
     return res.json(listOrders);
 };
