@@ -44,38 +44,18 @@
             <b> {{user.fullname}}</b>
         </p>
 
-       
+
 
         <!-- Navbar-->
         <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown"
-                    aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+                    aria-expanded="false"><img src="{{user.avatar}}" alt="avatar"
+                        style="width: 30px; height: 30px; border-radius: 50%; margin-right: 4px;" /></a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                     <li class="d-flex align-items-center justify-content-around dropdown-item">
                         <i class="fas fa-user-circle"></i>
-                        <a class="dropdown-item" href="/">Account information</a>
-                    </li>
-                    <li>
-                        <hr class="dropdown-divider" />
-                    </li>
-                    <li class="d-flex align-items-center justify-content-around dropdown-item">
-                        <i class="fas fa-user-edit"></i>
-                        <a class="dropdown-item" href="/">Update account</a>
-                    </li>
-                    <li>
-                        <hr class="dropdown-divider" />
-                    </li>
-                    <li class="d-flex align-items-center justify-content-around dropdown-item">
-                        <i class="fas fa-users-cog"></i>
-                        <a class="dropdown-item" href="/">Admin list</a>
-                    </li>
-                    <li>
-                        <hr class="dropdown-divider" />
-                    </li>
-                    <li class="d-flex align-items-center justify-content-around dropdown-item">
-                        <i class="fas fa-user-plus"></i>
-                        <a class="dropdown-item" href="/">Add an admin</a>
+                        <a class="dropdown-item" href="/admin">Account profile</a>
                     </li>
                     <li>
                         <hr class="dropdown-divider" />

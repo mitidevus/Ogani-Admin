@@ -9,6 +9,7 @@ const hbs = require("hbs");
 
 const authRouter = require("./components/auth");
 const accountsRouter = require("./components/accounts");
+const adminRouter = require("./components/admin");
 const productRouter = require("./components/product");
 const categoryRouter = require("./components/category");
 const brandRouter = require("./components/brand");
@@ -55,6 +56,7 @@ app.use(function (req, res, next) {
 
 app.use("/", authRouter);
 app.use("/accounts", accountsRouter);
+app.use("/admin", adminRouter);
 app.use("/product", productRouter);
 app.use("/category", categoryRouter);
 app.use("/brand", brandRouter);

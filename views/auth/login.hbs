@@ -1,13 +1,18 @@
-<form method="POST">
-    <h3>Login</h3>
+<head>
+    <link rel="stylesheet" href="/css/login_style.css"/>
+</head>
 
-    {{#if error}}
-    <p class="auth-error">{{error}}</p>
-    {{/if}}
+<div class="login-page">
+    <div class="form">
+    <h1>LOGIN</h2>
+        <form method="POST" class="login-form">
+            {{#if error}}
+            <p class="auth-error">{{error}}</p>
+            {{/if}}
+            <input type="email" id="email" name="email" placeholder="username"/>
+            <input type="password" id="password" name="password" placeholder="password"/>
+            <button type="submit" value="Login">login</button>
 
-    <label for="email">Email:</label><br>
-    <input type="email" id="email" name="email"><br>
-    <label for="password">Password:</label><br>
-    <input type="password" id="password" name="password"><br><br>
-    <input type="submit" value="Login">
-</form>
+        </form>
+    </div>
+</div>

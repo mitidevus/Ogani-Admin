@@ -8,28 +8,28 @@ exports.countAllAccount = async () => {
 
 exports.getAllAccount = async (page = 1, search, sort) => {
     let sqlOrder;
-    if (sort==="name-mail-asc"){
-        sqlOrder="order by email asc, fullname asc"
-    }else if (sort==="name-mail-desc"){
-        sqlOrder="order by email desc, fullname desc"
-    }else if (sort==="day-asc"){
-        sqlOrder="order by created_at asc"
-    }else if (sort==="day-desc"){
-        sqlOrder="order by created_at desc"
+    if (sort === "name-mail-asc") {
+        sqlOrder = "order by email asc, fullname asc"
+    } else if (sort === "name-mail-desc") {
+        sqlOrder = "order by email desc, fullname desc"
+    } else if (sort === "day-asc") {
+        sqlOrder = "order by created_at asc"
+    } else if (sort === "day-desc") {
+        sqlOrder = "order by created_at desc"
     }
     let sqlCount = "select count(*) from user"
     let sqlData = "select * from user"
 
-    let sql= `${sqlData} ${search?" where ":""} ${search?"email LIKE '%"+search+"%' ":""} ${sqlOrder?sqlOrder:""} limit ${ACCOUNT_PER_PAGE} offset ${(Number(page) - 1) * ACCOUNT_PER_PAGE}`
+    let sql = `${sqlData} ${search ? " where " : ""} ${search ? "email LIKE '%" + search + "%' " : ""} ${sqlOrder ? sqlOrder : ""} limit ${ACCOUNT_PER_PAGE} offset ${(Number(page) - 1) * ACCOUNT_PER_PAGE}`
     console.log(sql)
-    let count = await db.connection.execute(`${sqlCount} ${search?" where ":""} ${search?"email LIKE '%"+search+"%' ":""} `);
-    let data = await db.connection.execute(`${sqlData} ${search?" where ":""} ${search?"email LIKE '%"+search+"%' ":""} ${sqlOrder?sqlOrder:""} limit ${ACCOUNT_PER_PAGE} offset ${(Number(page) - 1) * ACCOUNT_PER_PAGE}`);
+    let count = await db.connection.execute(`${sqlCount} ${search ? " where " : ""} ${search ? "email LIKE '%" + search + "%' " : ""} `);
+    let data = await db.connection.execute(`${sqlData} ${search ? " where " : ""} ${search ? "email LIKE '%" + search + "%' " : ""} ${sqlOrder ? sqlOrder : ""} limit ${ACCOUNT_PER_PAGE} offset ${(Number(page) - 1) * ACCOUNT_PER_PAGE}`);
 
     count = count[0][0]["count(*)"]
 
-    if (count==0){
-        count = await db.connection.execute(`${sqlCount} ${search?" where ":""} ${search?"fullname LIKE '%"+search+"%' ":""} `);
-        data = await db.connection.execute(`${sqlData} ${search?" where ":""} ${search?"fullname LIKE '%"+search+"%' ":""} ${sqlOrder?sqlOrder:""} limit ${ACCOUNT_PER_PAGE} offset ${(Number(page) - 1) * ACCOUNT_PER_PAGE}`);
+    if (count == 0) {
+        count = await db.connection.execute(`${sqlCount} ${search ? " where " : ""} ${search ? "fullname LIKE '%" + search + "%' " : ""} `);
+        data = await db.connection.execute(`${sqlData} ${search ? " where " : ""} ${search ? "fullname LIKE '%" + search + "%' " : ""} ${sqlOrder ? sqlOrder : ""} limit ${ACCOUNT_PER_PAGE} offset ${(Number(page) - 1) * ACCOUNT_PER_PAGE}`);
     }
 
 
@@ -62,7 +62,7 @@ exports.getSortedProductByNameOrEmail_ASC = async (page, name, email, nameFilter
 
 }
 
-exports.getSortedProductByDay_DESC = async (page, day ,nameFilter) => {
+exports.getSortedProductByDay_DESC = async (page, day, nameFilter) => {
     let sqlCount = "select count(*) from user";
     let sqlData = "select * from user";
     let data;
