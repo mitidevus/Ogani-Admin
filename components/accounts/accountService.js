@@ -27,3 +27,7 @@ exports.getSortedAccountByDay_DESC = async (page, day, nameFilter) => {
 exports.getSortedAccountByDay_ASC = async (page, day, nameFilter) => {
     return accountRepository.getSortedAccountByDay_ASC(page, day, nameFilter);
 }
+
+exports.getAccountById = async (id) => {
+    return accountRepository.getAccountById(id);
+}

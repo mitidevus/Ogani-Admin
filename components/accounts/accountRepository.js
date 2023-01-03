@@ -77,3 +77,8 @@ exports.getSortedProductByDay_ASC = async (page, day, nameFilter) => {
     let count;
 
 }
+
+exports.getAccountById = async (id) => {
+    let data = await db.connection.execute(`select * from user where user_Id =? `, [id]);
+    return data[0][0];
+}

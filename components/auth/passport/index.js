@@ -12,7 +12,7 @@ passport.use(new LocalStrategy({ usernameField: 'email' }, async function verify
 
 passport.serializeUser(function (user, cb) {
   process.nextTick(function () {
-    cb(null, { user_Id: user.user_Id, fullname: user.fullname, email: user.email, address: user.address , avatar: user.avatar});
+    cb(null, { user_Id: user.user_Id, fullname: user.fullname, email: user.email, address: user.address, phone: user.phone , avatar: user.avatar});
   });
 });
 

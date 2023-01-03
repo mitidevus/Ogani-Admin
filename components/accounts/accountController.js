@@ -20,3 +20,11 @@ exports.ban_handle = async (req, res) => {
     let result = await accountService.ban_user(id)
     res.json(result);
 }
+
+exports.view_account_detail = async (req, res) => {
+    const account_id = req.params.id;
+    console.log("account_id: ", account_id)
+    const account = await accountService.getAccountById(account_id);
+    console.log("account detail: ", account);
+    res.render("accounts/account_detail", {account});
+}
