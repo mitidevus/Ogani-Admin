@@ -5,7 +5,8 @@
                 <div class="col-12 col-md-9 col-lg-7 col-xl-6">
                     <div class="card mt-4" style="border-radius: 15px;">
                         <div class="card-body p-5">
-
+                            <div style="display: none;" id="message" class="alert alert-danger" role="alert">
+                            </div>
                             {{#if error}}
                             <div id="error_notification" class="alert alert-danger" role="alert">
                                 {{error}}
@@ -26,8 +27,8 @@
                                 </div>
                                 <div class="form-outline mb-4">
                                     <label class="form-label" for="image">Image link</label>
-                                    <input name="image" type="text" id="image_link"
-                                        class="form-control form-control-lg" />
+                                    <input name="image" type="text" id="image_link" class="form-control form-control-lg"
+                                        value="{{brand.image}}" required />
                                 </div>
 
                                 <div class="d-grid gap-2">
@@ -44,14 +45,24 @@
                             function myFunction() {
                                 (async () => {
                                     const name = $('#name').val();
+                                    const image = $('#image_link').val();
 
                                     console.log("name: ", name);
+                                    console.log("image: ", image);
 
                                     if (name == "") {
                                         $('#error_notification').hide();
                                         $('#message').show();
                                         $('#message').html('You need to enter the brand name!');
                                         $('#name').focus();
+                                        return;
+                                    }
+
+                                    if (image == "") {
+                                        $('#error_notification').hide();
+                                        $('#message').show();
+                                        $('#message').html('You need to enter the brand\'s image link!');
+                                        $('#image_link').focus();
                                         return;
                                     }
 
