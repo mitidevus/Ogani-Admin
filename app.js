@@ -11,6 +11,7 @@ const categoryRouter = require("./components/category");
 const producerRouter = require("./components/producer");
 const orderRouter = require("./components/order");
 const apiProductRouter = require('./components/product/api');
+const apiOrderRouter = require('./components/order/api');
 
 
 const app = express();
@@ -38,6 +39,7 @@ app.use("/order", orderRouter);
 
 // API
 app.use('/api/product', apiProductRouter);
+app.use('/api/order', apiOrderRouter)
 
 
 
