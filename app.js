@@ -19,6 +19,7 @@ const apiProductRouter = require('./components/product/api');
 const apiAccountRouter = require('./components/accounts/api');
 const apiCategoryRouter = require('./components/category/api');
 const apiBrandRouter = require('./components/brand/api');
+const apiOrderRouter = require('./components/order/api');
 
 const passport = require("./components/auth/passport");
 const auth = require("./middlewares/auth");
@@ -66,7 +67,8 @@ app.use("/order", orderRouter);
 app.use('/api/product', apiProductRouter);
 app.use('/api/accounts', apiAccountRouter);
 app.use('/api/category', apiCategoryRouter);
-app.use('/api/brand', apiBrandRouter);
+app.use('/api/brand', apiBrandRouter);app.use('/api/order', apiOrderRouter)
+
 
 
 // catch 404 and forward to error handler

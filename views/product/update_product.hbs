@@ -6,16 +6,16 @@
                     <div class="card mt-4" style="border-radius: 15px;">
                         <div class="card-body p-5">
 
+                            <h2 class="text-uppercase text-center mb-3">Update Product #{{product.product_Id}}</h2>
+
                             <div style="display: none;" id="message" class="alert alert-danger" role="alert">
                             </div>
-
-                            <h2 class="text-uppercase text-center mb-3">Update Product #{{product.product_Id}}</h2>
 
                             <form id="update-product-form" method="POST" action="/product/update/{{product.product_Id}}">
                                 <input type="hidden" name="id" value="{{product.product_Id}}" />
 
                                 <div class="row form-outline mb-2">
-                                    <div class="col-8">
+                                    <div class="col-6">
                                         <label class="form-label fw-bold" for="name">Name</label>
                                         <input
                                             name="name"
@@ -26,18 +26,17 @@
                                             required
                                         />
                                     </div>
-                                    <div class="col-2">
-                                        <label class="form-label fw-bold" for="quantity">Quantity</label>
-                                        <input
-                                            name="quantity"
-                                            type="number"
-                                            id="quantity"
-                                            class="form-control"
-                                            value="{{product.remain_Amount}}"
-                                            required
-                                        />
+                                    
+                                    <div class="col-3">
+                                        <label class="form-label fw-bold" for="status">Status</label>
+                                        <select id="status" name="status" class="form-control">
+                                            <option value="On stock">On stock</option>
+                                            <option value="Out of stock">Out of stock</option>
+                                            <option value="Suspend">Suspend</option>
+                                        </select>
                                     </div>
-                                    <div class="col-2">
+
+                                    <div class="col-3">
                                         <label class="form-label fw-bold" for="hot-product">Hot</label>
                                         <select id="hot-product" name="hot_product" class="form-control">
                                             <option value="1">Yes</option>
@@ -47,7 +46,7 @@
                                 </div>
 
                                 <div class="row form-outline mb-4">
-                                    <div class="col-4">
+                                    <div class="col-3">
                                         <label class="form-label fw-bold" for="price">Price</label>
                                         <input
                                             name="price"
@@ -58,7 +57,18 @@
                                             required
                                         />
                                     </div>
-                                    <div class="col-4">
+                                    <div class="col-3">
+                                        <label class="form-label fw-bold" for="quantity">Quantity</label>
+                                        <input
+                                            name="quantity"
+                                            type="number"
+                                            id="quantity"
+                                            class="form-control"
+                                            value="{{product.remain_Amount}}"
+                                            required
+                                        />
+                                    </div>
+                                    <div class="col-3">
                                         <label class="form-label fw-bold" for="product-category">Category</label>
                                         <select id="product-category" name="category_Id" class="form-control">
                                             {{#each listCategory}}
@@ -66,7 +76,7 @@
                                             {{/each}}
                                         </select>
                                     </div>
-                                    <div class="col-4">
+                                    <div class="col-3">
                                         <label class="form-label fw-bold" for="product-brand">Brand</label>
                                         <select id="product-brand" name="brand_Id" class="form-control">
                                             {{#each listBrand}}
@@ -118,7 +128,18 @@
                             <script>
                                 // When image input change, update image preview
                                 $('#image').change(function () {
-                                    $('.center img').attr('src', $(this).val());
+                                    if ($(this).val() == "") {
+                                        $('.center img').attr('src', '{{product.image}}');
+                                    }
+                                    else {
+                                        $('.center img').attr('src', $(this).val());
+                                    }
+                                });
+
+                                $('#status option').each(function () {
+                                    if ($(this).val() == '{{product.status}}') {
+                                        $(this).attr('selected', 'selected');
+                                    }
                                 });
 
                                 $('#hot-product option').each(function () {
@@ -150,49 +171,43 @@
 
                                     if (name == "") {
                                     $('#message').show();
-                                    $('#message').html('Bạn chưa nhập tên sản phẩm!');
+                                    $('#message').html('Please enter the name of the product!');
                                     $('#name').focus();
                                     return;
                                     }
                                     if (price == "") {
                                     $('#message').show();
-                                    $('#message').html('Bạn chưa nhập giá sản phẩm!');
+                                    $('#message').html('Please enter the price of the product!');
                                     $('#price').focus();
                                     return;
                                     }
                                     if (parseInt(price) < 0) {
                                     $('#message').show();
-                                    $('#message').html('Giá sản phẩm không được nhỏ hơn 0!');
+                                    $('#message').html('The price of product must be greater than 0!');
                                     $('#price').focus();
                                     return;
                                     }
                                     if (quantity == "") {
                                     $('#message').show();
-                                    $('#message').html('Bạn chưa nhập số lượng sản phẩm!');
+                                    $('#message').html('Please enter the quantity of the product!');
                                     $('#quantity').focus();
                                     return;
                                     }
                                     if (parseInt(quantity) < 0) {
                                     $('#message').show();
-                                    $('#message').html('Số lượng sản phẩm không được nhỏ hơn 0!');
+                                    $('#message').html('The quantity of product must be greater than 0!');
                                     $('#quantity').focus();
-                                    return;
-                                    }
-                                    if (hotProduct == "") {
-                                    $('#message').show();
-                                    $('#message').html('Bạn chưa nhập sản phẩm hot!');
-                                    $('#hot-product').focus();
                                     return;
                                     }
                                     if (image == "") {
                                         $('#message').show();
-                                        $('#message').html('Bạn chưa nhập ảnh sản phẩm!');
+                                        $('#message').html('Please enter the image of the product!');
                                         $('#image').focus();
                                         return;
                                     }
                                     if (description == "") {
                                     $('#message').show();
-                                    $('#message').html('Bạn chưa nhập chi tiết sản phẩm!');
+                                    $('#message').html('Please enter the description of the product!');
                                     $('#description').focus();
                                     return;
                                     }

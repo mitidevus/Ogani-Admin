@@ -6,25 +6,34 @@
                     <div class="card mt-4" style="border-radius: 15px;">
                         <div class="card-body p-5">
 
-                            {{!-- {{#if msg}}
-                                <div class="alert alert-danger">
-                                    {{msg}}
-                                </div>
-                            {{/if}} --}}
+                            <h2 class="text-uppercase text-center mb-3">Add new product</h2>
 
                             <div style="display: none;" id="message" class="alert alert-danger" role="alert">
                             </div>
 
-                            <h2 class="text-uppercase text-center mb-3">Add new product</h2>
-
                             <form id="add-product-form" action="/product/add" method="POST">
 
                                 <div class="row form-outline mb-2">
-                                    <div class="col-8">
+                                    <div class="col-9">
                                         <label class="form-label fw-bold" for="name">Name</label>
                                         <input name="name" type="text" id="name" class="form-control" required />
                                     </div>
-                                    <div class="col-4">
+                                    <div class="col-3">
+                                        <label class="form-label fw-bold" for="status">Status</label>
+                                        <select id="status" name="status" class="form-control">
+                                            <option value="On stock">On stock</option>
+                                            <option value="Out of stock">Out of stock</option>
+                                            <option value="Suspend">Suspend</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="row form-outline mb-4">
+                                    <div class="col-3">
+                                        <label class="form-label fw-bold" for="price">Price</label>
+                                        <input name="price" type="number" id="price" class="form-control" required />
+                                    </div>
+                                    <div class="col-3">
                                         <label class="form-label fw-bold" for="quantity">Quantity</label>
                                         <input
                                             name="quantity"
@@ -34,14 +43,7 @@
                                             required
                                         />
                                     </div>
-                                </div>
-
-                                <div class="row form-outline mb-2">
-                                    <div class="col-4">
-                                        <label class="form-label fw-bold" for="price">Price</label>
-                                        <input name="price" type="number" id="price" class="form-control" required />
-                                    </div>
-                                    <div class="col-4">
+                                    <div class="col-3">
                                         <label class="form-label fw-bold" for="product-category">Category</label>
                                         <select id="product-category" name="category_Id" class="form-control">
                                             {{#each listCategory}}
@@ -49,7 +51,7 @@
                                             {{/each}}
                                         </select>
                                     </div>
-                                    <div class="col-4">
+                                    <div class="col-3">
                                         <label class="form-label fw-bold" for="product-brand">Brand</label>
                                         <select id="product-brand" name="brand_Id" class="form-control">
                                             {{#each listBrand}}
@@ -57,17 +59,25 @@
                                             {{/each}}
                                         </select>
                                     </div>
+                                    
                                 </div>
 
-                                <div class="form-outline mb-2">
-                                    <label class="form-label fw-bold" for="image">Image</label>
-                                    <input
-                                        name="image"
-                                        type="text"
-                                        id="image"
-                                        class="form-control"
-                                        required
-                                    />
+                                <div class="row form-outline mb-2">
+                                    <div class="col-8">
+                                        <label class="form-label fw-bold" for="image">Image</label>
+                                        <input
+                                            name="image"
+                                            type="text"
+                                            id="image"
+                                            class="form-control"
+                                            required
+                                        />
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="center">
+                                            <img src="https://cdn0.iconfinder.com/data/icons/flat-green-organic-natural-badges/512/organic-natural-2-512.png" alt="" width="100px" height="100px" />
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <div class="form-outline mb-4">
@@ -96,6 +106,16 @@
                             </div>
                             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
                             <script>
+                                $('#image').change(function () {
+                                    // If #image is empty, set default image for $('.center img')
+                                    if ($(this).val() == "") {
+                                        $('.center img').attr('src', "https://cdn0.iconfinder.com/data/icons/flat-green-organic-natural-badges/512/organic-natural-2-512.png");
+                                    }
+                                    else {
+                                        $('.center img').attr('src', $(this).val());
+                                    }
+                                });
+                                
                                 function myFunction() {
                                 (async () => {
                                     const name = $('#name').val();
@@ -106,43 +126,43 @@
 
                                     if (name == "") {
                                     $('#message').show();
-                                    $('#message').html('Bạn chưa nhập tên sản phẩm!');
+                                    $('#message').html('Please enter the name of the product!');
                                     $('#name').focus();
                                     return;
                                     }
                                     if (price == "") {
                                     $('#message').show();
-                                    $('#message').html('Bạn chưa nhập giá sản phẩm!');
+                                    $('#message').html('Please enter the price of the product!');
                                     $('#price').focus();
                                     return;
                                     }
                                     if (parseInt(price) < 0) {
                                     $('#message').show();
-                                    $('#message').html('Giá sản phẩm không được nhỏ hơn 0!');
+                                    $('#message').html('The price of product must be greater than 0!');
                                     $('#price').focus();
                                     return;
                                     }
                                     if (quantity == "") {
                                     $('#message').show();
-                                    $('#message').html('Bạn chưa nhập số lượng sản phẩm!');
+                                    $('#message').html('Please enter the quantity of the product!');
                                     $('#quantity').focus();
                                     return;
                                     }
                                     if (parseInt(quantity) < 0) {
                                     $('#message').show();
-                                    $('#message').html('Số lượng sản phẩm không được nhỏ hơn 0!');
+                                    $('#message').html('The quantity of product must be greater than 0!');
                                     $('#quantity').focus();
                                     return;
                                     }
                                     if (image == "") {
                                     $('#message').show();
-                                    $('#message').html('Bạn chưa nhập ảnh sản phẩm!');
+                                    $('#message').html('Please enter the image of the product!');
                                     $('#image').focus();
                                     return;
                                     }
                                     if (description == "") {
                                     $('#message').show();
-                                    $('#message').html('Bạn chưa nhập chi tiết sản phẩm!');
+                                    $('#message').html('Please enter the description of the product!');
                                     $('#description').focus();
                                     return;
                                     }
